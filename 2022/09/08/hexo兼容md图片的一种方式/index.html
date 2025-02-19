@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"puzzzzzzle.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="标准md的图片格式  但是，md时纯文本， 图片必须存储在正确的相对位置上 可以使用图床, 把相对路径图片改为网络资源, 但是图床稳定性较差, 我更希望所有的图片都保存在post中, 离线也可以查看&#x2F;编辑 所有的md应该是标准的md格式  hexo 使用标准md图片的方式 _config.yml添加: post_asset_folder: true hexo new 会在source&#x2F;_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo兼容md图片的一种方式">
+<meta property="og:url" content="https://puzzzzzzle.github.io/2022/09/08/hexo%E5%85%BC%E5%AE%B9md%E5%9B%BE%E7%89%87%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F/index.html">
+<meta property="og:site_name" content="puzzzzzzle&#39;s blog">
+<meta property="og:description" content="标准md的图片格式  但是，md时纯文本， 图片必须存储在正确的相对位置上 可以使用图床, 把相对路径图片改为网络资源, 但是图床稳定性较差, 我更希望所有的图片都保存在post中, 离线也可以查看&#x2F;编辑 所有的md应该是标准的md格式  hexo 使用标准md图片的方式 _config.yml添加: post_asset_folder: true hexo new 会在source&#x2F;_">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://puzzzzzzle.github.io/2022/09/08/hexo%E5%85%BC%E5%AE%B9md%E5%9B%BE%E7%89%87%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F/Screenshot_20220909_003446.png">
+<meta property="article:published_time" content="2022-09-08T15:56:37.000Z">
+<meta property="article:modified_time" content="2025-02-18T03:24:10.058Z">
+<meta property="article:author" content="puzzzzzzle">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://puzzzzzzle.github.io/2022/09/08/hexo%E5%85%BC%E5%AE%B9md%E5%9B%BE%E7%89%87%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F/Screenshot_20220909_003446.png">
+
+<link rel="canonical" href="https://puzzzzzzle.github.io/2022/09/08/hexo%E5%85%BC%E5%AE%B9md%E5%9B%BE%E7%89%87%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>hexo兼容md图片的一种方式 | puzzzzzzle's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">puzzzzzzle's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">BLOG</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2022/09/08/hexo%E5%85%BC%E5%AE%B9md%E5%9B%BE%E7%89%87%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="puzzzzzzle">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="puzzzzzzle's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          hexo兼容md图片的一种方式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-09-08 23:56:37" itemprop="dateCreated datePublished" datetime="2022-09-08T23:56:37+08:00">2022-09-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-18 11:24:10" itemprop="dateModified" datetime="2025-02-18T11:24:10+08:00">2025-02-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="标准md的图片格式"><a href="#标准md的图片格式" class="headerlink" title="标准md的图片格式"></a>标准md的图片格式</h2><ul>
+<li><img src="/2022/09/08/hexo%E5%85%BC%E5%AE%B9md%E5%9B%BE%E7%89%87%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F/Screenshot_20220909_003446.png" class=""></li>
+<li>但是，md时纯文本， 图片必须存储在正确的相对位置上</li>
+<li>可以使用图床, 把相对路径图片改为网络资源, 但是图床稳定性较差, 我更希望所有的图片都保存在post中, 离线也可以查看&#x2F;编辑</li>
+<li>所有的md应该是标准的md格式</li>
+</ul>
+<h2 id="hexo-使用标准md图片的方式"><a href="#hexo-使用标准md图片的方式" class="headerlink" title="hexo 使用标准md图片的方式"></a>hexo 使用标准md图片的方式</h2><ul>
+<li>_config.yml添加:<ul>
+<li><code>post_asset_folder: true</code></li>
+<li>hexo new 会在<code>source/_posts</code>中生成同名文件夹, 将图片资源放在post_name中, 就可以用相对路径使用了.</li>
+</ul>
+</li>
+<li>md预览也没问题</li>
+</ul>
+<h2 id="无法在首页预览的问题"><a href="#无法在首页预览的问题" class="headerlink" title="无法在首页预览的问题"></a>无法在首页预览的问题</h2><h3 id="标签插件语法引用"><a href="#标签插件语法引用" class="headerlink" title="标签插件语法引用"></a>标签插件语法引用</h3><ul>
+<li><code>&#123;% asset_img image.png %&#125;</code><ul>
+<li>使用这种方式替代md的图片显示方式, 可以做到在首页显示</li>
+<li>但是md又无法预览了</li>
+</ul>
+</li>
+</ul>
+<h2 id="最终解决方案"><a href="#最终解决方案" class="headerlink" title="最终解决方案"></a>最终解决方案</h2><ul>
+<li>我们还是使用标准md语法</li>
+<li>在<code>hexo generate</code>用正则表达式实现替换</li>
+<li>generate 结束后 时还原文件(git)</li>
+<li>当然需要检查当前work dir git clean, 不然还原会导致丢文件</li>
+</ul>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><ul>
+<li>由于我不熟悉js, 就用python+shell写了</li>
+<li>在 根目录下添加</li>
+<li>post_fix_tools.py</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> enum</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">posts = <span class="string">&quot;source/_posts&quot;</span></span><br><span class="line"></span><br><span class="line">valid_pic_suffix = [<span class="string">&quot;png&quot;</span>, <span class="string">&quot;jpg&quot;</span>, <span class="string">&quot;jpeg&quot;</span>, <span class="string">&quot;gif&quot;</span>, <span class="string">&quot;svg&quot;</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_is_pic</span>(<span class="params">pic_file_name</span>):</span><br><span class="line">  suffix = Path(pic_file_name).suffix.lower()</span><br><span class="line">  <span class="keyword">if</span> suffix <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> suffix == <span class="string">&quot;&quot;</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">  <span class="keyword">return</span> suffix[<span class="number">1</span>:] <span class="keyword">in</span> valid_pic_suffix</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OperateType</span>(enum.Enum):</span><br><span class="line">  <span class="comment"># 在所有图片后面， 插入一行 asset 标记</span></span><br><span class="line">  ADD_ASSET = <span class="number">1</span></span><br><span class="line">  <span class="comment"># 删除 所有 asset 标记</span></span><br><span class="line">  REM_ASSET = <span class="number">2</span></span><br><span class="line">  <span class="comment"># 用 asset 标记， 替代 md 图片， 只用于打包， 目前还没做还原， 得用Git 还原</span></span><br><span class="line">  REPLACE_BY_ASSERT = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fix_one_post</span>(<span class="params">file, operate_type</span>):</span><br><span class="line">  new_lines = []</span><br><span class="line">  <span class="keyword">with</span> <span class="built_in">open</span>(file, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    old_lines = f.readlines()</span><br><span class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(old_lines)):</span><br><span class="line">    l = old_lines[i]</span><br><span class="line">    <span class="comment"># 忽略资源行， 直接添加</span></span><br><span class="line">    <span class="keyword">if</span> l.startswith(<span class="string">&quot;[&quot;</span>):</span><br><span class="line">      new_lines.append(l)</span><br><span class="line">      <span class="keyword">continue</span></span><br><span class="line">    <span class="comment"># 忽略 asset 行， 按需添加</span></span><br><span class="line">    <span class="keyword">if</span> l.strip().startswith(<span class="string">&quot;&#123;%&quot;</span>):</span><br><span class="line">      <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> operate_type == OperateType.REM_ASSET:</span><br><span class="line">      new_lines.append(l)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">      <span class="comment"># &#123;% asset_img pic.png%&#125;</span></span><br><span class="line">      re_obj = re.search(<span class="string">r&quot;(.*)!\[(.*)](.*)\((.*)\)(.*)&quot;</span>, l)</span><br><span class="line">      <span class="keyword">if</span> re_obj <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        groups = re_obj.groups()</span><br><span class="line">        <span class="comment"># print(f&quot;&#123;re_obj&#125; --- &#123;re_obj.groups()&#125;&quot;)</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">len</span>(groups) == <span class="number">5</span></span><br><span class="line">        pic_file_path = groups[<span class="number">3</span>]</span><br><span class="line">        <span class="keyword">assert</span> check_is_pic(pic_file_path)</span><br><span class="line">        <span class="comment"># &#123;% asset_img pic.png This is an example image %&#125;</span></span><br><span class="line">        pic_file_name = <span class="built_in">str</span>(Path(pic_file_path).name)</span><br><span class="line">        <span class="comment"># 添加 asset 行时， 保留原有行</span></span><br><span class="line">        <span class="keyword">if</span> operate_type == OperateType.ADD_ASSET:</span><br><span class="line">          new_lines.append(l)</span><br><span class="line">          asset_line = <span class="string">f&quot;&#123;&#123;% asset_img <span class="subst">&#123;pic_file_name&#125;</span>%&#125;&#125;\n&quot;</span></span><br><span class="line">          new_lines.append(asset_line)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">          <span class="comment"># 否则， 忽略原有行， 用asset 替代</span></span><br><span class="line">          asset_line = <span class="string">f&quot;<span class="subst">&#123;groups[<span class="number">0</span>]&#125;</span>&#123;&#123;% asset_img <span class="subst">&#123;pic_file_name&#125;</span>%&#125;&#125;<span class="subst">&#123;groups[<span class="number">4</span>]&#125;</span>\n&quot;</span></span><br><span class="line">          new_lines.append(asset_line)</span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># 正则匹配失败的行直接添加</span></span><br><span class="line">        new_lines.append(l)</span><br><span class="line">  <span class="keyword">with</span> <span class="built_in">open</span>(file, <span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.writelines(new_lines)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">  argv = sys.argv</span><br><span class="line">  operate_type = OperateType.ADD_ASSET</span><br><span class="line">  <span class="keyword">if</span> argv[<span class="number">1</span>] == <span class="string">&quot;add&quot;</span>:</span><br><span class="line">    operate_type = OperateType.ADD_ASSET</span><br><span class="line">  <span class="keyword">elif</span> argv[<span class="number">1</span>] == <span class="string">&quot;rem&quot;</span>:</span><br><span class="line">    operate_type = OperateType.REM_ASSET</span><br><span class="line">  <span class="keyword">elif</span> argv[<span class="number">1</span>] == <span class="string">&quot;replace&quot;</span>:</span><br><span class="line">    operate_type = OperateType.REPLACE_BY_ASSERT</span><br><span class="line">  <span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">raise</span> RuntimeError(<span class="string">f&quot;wrong arguments <span class="subst">&#123;argv&#125;</span>&quot;</span>)</span><br><span class="line">  <span class="keyword">for</span> path, dir_list, file_list <span class="keyword">in</span> os.walk(posts):</span><br><span class="line">    <span class="keyword">for</span> file_name <span class="keyword">in</span> file_list:</span><br><span class="line">      <span class="keyword">if</span> file_name.lower().endswith(<span class="string">&quot;.md&quot;</span>):</span><br><span class="line">        real_name = os.path.join(path, file_name)</span><br><span class="line">        fix_one_post(real_name, operate_type)</span><br><span class="line">  <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">  main()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>for *nix:</li>
+<li>build.sh</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line">if [[ -z $(git status -s) ]]; then</span><br><span class="line">  echo &#x27;clean work space, will build&#x27;</span><br><span class="line">  python3 post_fix_tools.py replace</span><br><span class="line">  hexo g</span><br><span class="line">  git reset --hard HEAD</span><br><span class="line">else</span><br><span class="line">  echo &#x27;dirty , not work&#x27;</span><br><span class="line">fi</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>for win:</li>
+<li>build.bat</li>
+</ul>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span>  off</span><br><span class="line"><span class="keyword">for</span> /f &quot;delims=*&quot; <span class="variable">%%i</span> <span class="keyword">in</span> (&#x27;git status -s&#x27;) <span class="keyword">do</span> (</span><br><span class="line">  <span class="built_in">echo</span> dirty , <span class="keyword">not</span> work :</span><br><span class="line">  <span class="built_in">echo</span> <span class="variable">%%i</span></span><br><span class="line">  <span class="keyword">goto</span> :EOF</span><br><span class="line">)</span><br><span class="line"><span class="built_in">echo</span> clean work space, will build</span><br><span class="line"><span class="built_in">cmd</span> /k &quot;python3 post_fix_tools.py <span class="built_in">replace</span> &amp;&amp; hexo g &amp;&amp; git reset --hard HEAD&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><ul>
+<li>在我们用标准的md写完后, 首先提交git, 保持仓库clean</li>
+<li>使用 build.sh&#x2F;build.bat 替代 hexo g<ul>
+<li>会临时把所有post的图片修改为 asset 格式, 再掉哟给你hexo g, 最后用 git reset 还原</li>
+</ul>
+</li>
+<li>剩下的没啥区别</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/hexo/" rel="tag"># hexo</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/09/08/%E8%B9%AD%E5%90%84%E4%B8%AA%E5%A4%A7%E5%AD%A6%E7%9A%84jetbrains%E8%AE%B8%E5%8F%AF%E7%9A%84%E6%96%B9%E6%B3%95/" rel="prev" title="蹭各个大学的jetbrains许可的方法">
+      <i class="fa fa-chevron-left"></i> 蹭各个大学的jetbrains许可的方法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/09/09/shell%E8%84%9A%E6%9C%AC-%E5%8F%82%E6%95%B0%E4%BC%98%E5%85%88%E7%BA%A7/" rel="next" title="shell脚本 参数优先级">
+      shell脚本 参数优先级 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E5%87%86md%E7%9A%84%E5%9B%BE%E7%89%87%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">标准md的图片格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-%E4%BD%BF%E7%94%A8%E6%A0%87%E5%87%86md%E5%9B%BE%E7%89%87%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">hexo 使用标准md图片的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E5%9C%A8%E9%A6%96%E9%A1%B5%E9%A2%84%E8%A7%88%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">无法在首页预览的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E7%AD%BE%E6%8F%92%E4%BB%B6%E8%AF%AD%E6%B3%95%E5%BC%95%E7%94%A8"><span class="nav-number">3.1.</span> <span class="nav-text">标签插件语法引用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">4.</span> <span class="nav-text">最终解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.1.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">4.2.</span> <span class="nav-text">使用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">puzzzzzzle</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">puzzzzzzle</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"puzzzzzzle.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="安装minikube 提前安装好docker并启动, 用docker作为虚拟集群的驱动  12345678rpm系列:curl -LO https:&#x2F;&#x2F;storage.googleapis.com&#x2F;minikube&#x2F;releases&#x2F;latest&#x2F;minikube-latest.x86_64.rpm rpm -Uvh minikube-latest.x86_64.rpmdpkg系列:curl -L">
+<meta property="og:type" content="article">
+<meta property="og:title" content="远程搭建minikube环境折腾记录">
+<meta property="og:url" content="https://puzzzzzzle.github.io/2025/02/19/%E8%BF%9C%E7%A8%8B%E6%90%AD%E5%BB%BAminikube%E7%8E%AF%E5%A2%83%E6%8A%98%E8%85%BE%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="puzzzzzzle&#39;s blog">
+<meta property="og:description" content="安装minikube 提前安装好docker并启动, 用docker作为虚拟集群的驱动  12345678rpm系列:curl -LO https:&#x2F;&#x2F;storage.googleapis.com&#x2F;minikube&#x2F;releases&#x2F;latest&#x2F;minikube-latest.x86_64.rpm rpm -Uvh minikube-latest.x86_64.rpmdpkg系列:curl -L">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-19T03:40:35.000Z">
+<meta property="article:modified_time" content="2025-02-19T07:18:36.427Z">
+<meta property="article:author" content="puzzzzzzle">
+<meta property="article:tag" content="program">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://puzzzzzzle.github.io/2025/02/19/%E8%BF%9C%E7%A8%8B%E6%90%AD%E5%BB%BAminikube%E7%8E%AF%E5%A2%83%E6%8A%98%E8%85%BE%E8%AE%B0%E5%BD%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>远程搭建minikube环境折腾记录 | puzzzzzzle's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">puzzzzzzle's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">BLOG</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2025/02/19/%E8%BF%9C%E7%A8%8B%E6%90%AD%E5%BB%BAminikube%E7%8E%AF%E5%A2%83%E6%8A%98%E8%85%BE%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="puzzzzzzle">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="puzzzzzzle's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          远程搭建minikube环境折腾记录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-02-19 11:40:35 / 修改时间：15:18:36" itemprop="dateCreated datePublished" datetime="2025-02-19T11:40:35+08:00">2025-02-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="安装minikube"><a href="#安装minikube" class="headerlink" title="安装minikube"></a>安装minikube</h2><ul>
+<li>提前安装好docker并启动, 用docker作为虚拟集群的驱动</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rpm系列:</span><br><span class="line">curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-latest.x86_64.rpm </span><br><span class="line">rpm -Uvh minikube-latest.x86_64.rpm</span><br><span class="line"></span><br><span class="line">dpkg系列:</span><br><span class="line">curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb</span><br><span class="line">dpkg -i minikube_latest_amd64.deb</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="启动minikube-docker"><a href="#启动minikube-docker" class="headerlink" title="启动minikube(docker)"></a>启动minikube(docker)</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 非root用户把当前用户加入docker用户组</span><br><span class="line">sudo usermod -aG docker $USER &amp;&amp; newgrp docker</span><br><span class="line"></span><br><span class="line"># root用户, 执行时额外加上`--force`强制执行</span><br><span class="line"></span><br><span class="line"># docker作为驱动, 默认单节点方式</span><br><span class="line">minikube start -d docker</span><br><span class="line"></span><br><span class="line"># 额外启动两个node节点</span><br><span class="line">minikube start -n3 -d docker</span><br><span class="line"></span><br><span class="line"># 检查启动状态</span><br><span class="line">minikube kubectl -- get pods -A  </span><br></pre></td></tr></table></figure>
+
+
+<h2 id="启动dashbord"><a href="#启动dashbord" class="headerlink" title="启动dashbord"></a>启动dashbord</h2><ul>
+<li>没有放在后台, 方便随时停止</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 可选: 启动额外的监控</span><br><span class="line">minikube addons enable metrics-server</span><br><span class="line"></span><br><span class="line"># 启动dashbord, 要拉取一些镜像, 比较慢</span><br><span class="line">minikube dashboard --url</span><br></pre></td></tr></table></figure>
+<ul>
+<li>把url 复制到本地浏览器中</li>
+</ul>
+<h3 id="远程Linux机器转发dashbord"><a href="#远程Linux机器转发dashbord" class="headerlink" title="远程Linux机器转发dashbord"></a>远程Linux机器转发dashbord</h3><ul>
+<li>dashbord默认没有暴漏在公网, 远程Linux启动的话只能在远程机器上访问</li>
+<li>如果允许开启ssh 隧道的话, 直接ssh遂穿到本地就行<code>ssh -L 40439:localhost:40439 root@aaabbb</code></li>
+<li>或者把dashbord 直接暴漏在公网, 比较危险</li>
+</ul>
+<h3 id="x11转发远程窗口方式"><a href="#x11转发远程窗口方式" class="headerlink" title="x11转发远程窗口方式"></a>x11转发远程窗口方式</h3><ul>
+<li>由于安全策略, 禁止任何ssh隧道, 这里直接使用x11转发浏览器窗口</li>
+</ul>
+<h4 id="远端开启x11转发"><a href="#远端开启x11转发" class="headerlink" title="远端开启x11转发"></a>远端开启x11转发</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/ssh/ssh_config</span><br><span class="line"></span><br><span class="line">#打开下面的选项:</span><br><span class="line">X11Forwarding yes</span><br><span class="line">X11DisplayOffset 10</span><br><span class="line">X11UseLocalhost yes</span><br><span class="line"></span><br><span class="line">#重启sshd</span><br><span class="line">systemctl restart sshd</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="远端安装firefox-xclock"><a href="#远端安装firefox-xclock" class="headerlink" title="远端安装firefox, xclock"></a>远端安装firefox, xclock</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf install xclock firefox</span><br></pre></td></tr></table></figure>
+
+<h4 id="本地安装putty-VcXsrv"><a href="#本地安装putty-VcXsrv" class="headerlink" title="本地安装putty+VcXsrv"></a>本地安装putty+VcXsrv</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://sourceforge.net/projects/vcxsrv/">vcxsrv</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">putty</a></li>
+<li>或者 <a target="_blank" rel="noopener" href="https://mobaxterm.mobatek.net/">mobaxterm</a> 整合了两个, 省去配置, 不过是商业软件, 注意版权</li>
+<li>RDP&#x2F;VNC等方式就要自己折腾了</li>
+</ul>
+<h4 id="配置VcXsrv"><a href="#配置VcXsrv" class="headerlink" title="配置VcXsrv"></a>配置VcXsrv</h4><ul>
+<li>multiple windows 模式, display number 设置为0吧, 不自动探测了<ul>
+<li></li>
+</ul>
+</li>
+<li>关闭访问控制(disable access control)<ul>
+<li></li>
+</ul>
+</li>
+<li>启动后放在后台等待</li>
+</ul>
+<h4 id="配置putty并启动firefox-打开远端的localhost网页"><a href="#配置putty并启动firefox-打开远端的localhost网页" class="headerlink" title="配置putty并启动firefox, 打开远端的localhost网页"></a>配置putty并启动firefox, 打开远端的localhost网页</h4><ul>
+<li><p>putty 正常建立ssh连接</p>
+</li>
+<li><p>额外打开x11转发</p>
+<ul>
+<li></li>
+<li>display localtion 和前面 VcXsrv保持一致继续</li>
+</ul>
+</li>
+<li><p>用xclock 测试是否正常显示: 远端执行<code>xclock</code>, 本地Windows应该有一个窗口自动打开</p>
+</li>
+<li><p>打开Firefox浏览器并打开dashbord</p>
+<ul>
+<li>远端执行<code>firefox</code> 本地VcXsrv启动一个窗口</li>
+<li>远端的localhost地址, eg: <a target="_blank" rel="noopener" href="http://127.0.0.1:40439/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/">http://127.0.0.1:40439/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/</a></li>
+<li></li>
+</ul>
+</li>
+</ul>
+<h2 id="hello-node-测试"><a href="#hello-node-测试" class="headerlink" title="hello node 测试"></a>hello node 测试</h2><ul>
+<li>参考: <a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/tutorials/hello-minikube/">https://kubernetes.io/zh-cn/docs/tutorials/hello-minikube/</a></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 创建</span><br><span class="line">kubectl create deployment hello-node --image=registry.k8s.io/e2e-test-images/agnhost:2.39 -- /agnhost netexec --http-port=8080</span><br><span class="line"># 暴漏服务</span><br><span class="line">kubectl expose deployment hello-node --type=LoadBalancer --port=8080</span><br><span class="line"># 查看地址</span><br><span class="line">kubectl get services</span><br><span class="line">minikube service hello-node</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/03/11/rsync%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/" rel="prev" title="rsync命令使用">
+      <i class="fa fa-chevron-left"></i> rsync命令使用
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85minikube"><span class="nav-number">1.</span> <span class="nav-text">安装minikube</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8minikube-docker"><span class="nav-number">2.</span> <span class="nav-text">启动minikube(docker)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8dashbord"><span class="nav-number">3.</span> <span class="nav-text">启动dashbord</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8BLinux%E6%9C%BA%E5%99%A8%E8%BD%AC%E5%8F%91dashbord"><span class="nav-number">3.1.</span> <span class="nav-text">远程Linux机器转发dashbord</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#x11%E8%BD%AC%E5%8F%91%E8%BF%9C%E7%A8%8B%E7%AA%97%E5%8F%A3%E6%96%B9%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">x11转发远程窗口方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9C%E7%AB%AF%E5%BC%80%E5%90%AFx11%E8%BD%AC%E5%8F%91"><span class="nav-number">3.2.1.</span> <span class="nav-text">远端开启x11转发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9C%E7%AB%AF%E5%AE%89%E8%A3%85firefox-xclock"><span class="nav-number">3.2.2.</span> <span class="nav-text">远端安装firefox, xclock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E5%AE%89%E8%A3%85putty-VcXsrv"><span class="nav-number">3.2.3.</span> <span class="nav-text">本地安装putty+VcXsrv</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEVcXsrv"><span class="nav-number">3.2.4.</span> <span class="nav-text">配置VcXsrv</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEputty%E5%B9%B6%E5%90%AF%E5%8A%A8firefox-%E6%89%93%E5%BC%80%E8%BF%9C%E7%AB%AF%E7%9A%84localhost%E7%BD%91%E9%A1%B5"><span class="nav-number">3.2.5.</span> <span class="nav-text">配置putty并启动firefox, 打开远端的localhost网页</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hello-node-%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">hello node 测试</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">puzzzzzzle</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">puzzzzzzle</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

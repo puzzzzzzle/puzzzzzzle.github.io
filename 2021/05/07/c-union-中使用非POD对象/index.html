@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"puzzzzzzle.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="c++ union 中使用非POD对象c++ 定义123456789(C++11 前)联合体不能含有带非平凡特殊成员函数（复制构造函数、复制赋值运算符或析构函数）的非静态数据成员。(C++11 起)若联合体含有带非平凡特殊成员函数（复制&#x2F;移动构造函数，复制&#x2F;移动赋值，或析构函数）的非静态数据成员，则联合体中的该函数默认被弃置，且需要程序员显式定义它。若联合体含有带非平凡默认构造函数的非静态数据成员">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++ union 中使用非POD对象">
+<meta property="og:url" content="https://puzzzzzzle.github.io/2021/05/07/c-union-%E4%B8%AD%E4%BD%BF%E7%94%A8%E9%9D%9EPOD%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="puzzzzzzle&#39;s blog">
+<meta property="og:description" content="c++ union 中使用非POD对象c++ 定义123456789(C++11 前)联合体不能含有带非平凡特殊成员函数（复制构造函数、复制赋值运算符或析构函数）的非静态数据成员。(C++11 起)若联合体含有带非平凡特殊成员函数（复制&#x2F;移动构造函数，复制&#x2F;移动赋值，或析构函数）的非静态数据成员，则联合体中的该函数默认被弃置，且需要程序员显式定义它。若联合体含有带非平凡默认构造函数的非静态数据成员">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-07T03:25:31.000Z">
+<meta property="article:modified_time" content="2025-02-18T03:24:10.069Z">
+<meta property="article:author" content="puzzzzzzle">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://puzzzzzzle.github.io/2021/05/07/c-union-%E4%B8%AD%E4%BD%BF%E7%94%A8%E9%9D%9EPOD%E5%AF%B9%E8%B1%A1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>c++ union 中使用非POD对象 | puzzzzzzle's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">puzzzzzzle's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">BLOG</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2021/05/07/c-union-%E4%B8%AD%E4%BD%BF%E7%94%A8%E9%9D%9EPOD%E5%AF%B9%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="puzzzzzzle">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="puzzzzzzle's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          c++ union 中使用非POD对象
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-07 11:25:31" itemprop="dateCreated datePublished" datetime="2021-05-07T11:25:31+08:00">2021-05-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-18 11:24:10" itemprop="dateModified" datetime="2025-02-18T11:24:10+08:00">2025-02-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="c-union-中使用非POD对象"><a href="#c-union-中使用非POD对象" class="headerlink" title="c++ union 中使用非POD对象"></a>c++ union 中使用非POD对象</h1><h2 id="c-定义"><a href="#c-定义" class="headerlink" title="c++ 定义"></a>c++ 定义</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(C++11 前)</span><br><span class="line">联合体不能含有带非平凡特殊成员函数（复制构造函数、复制赋值运算符或析构函数）的非静态数据成员。</span><br><span class="line"></span><br><span class="line">(C++11 起)</span><br><span class="line">若联合体含有带非平凡特殊成员函数（复制/移动构造函数，复制/移动赋值，或析构函数）的非静态数据成员，则联合体中的该函数默认被弃置，且需要程序员显式定义它。</span><br><span class="line"></span><br><span class="line">若联合体含有带非平凡默认构造函数的非静态数据成员，则该联合体的默认构造函数默认被弃置，除非联合体的变体成员拥有一个默认成员初始化器。</span><br><span class="line"></span><br><span class="line">至多一个变体成员可以拥有默认成员初始化器。</span><br></pre></td></tr></table></figure>
+<ol>
+<li>c++11 起, 可以使用 非POD对象, 但是 c++不会帮你调用默认的构造和析构函数, 必须自己定义</li>
+</ol>
+<h2 id="对于POD数据"><a href="#对于POD数据" class="headerlink" title="对于POD数据"></a>对于POD数据</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">union</span> <span class="title class_">S</span> &#123;</span><br><span class="line">  std::<span class="type">int32_t</span> n;      <span class="comment">// 占用4字节</span></span><br><span class="line">  std::<span class="type">uint16_t</span> s[<span class="number">2</span>];  <span class="comment">// 占用4字节</span></span><br><span class="line">  std::<span class="type">uint8_t</span> c;      <span class="comment">// 占用1字节</span></span><br><span class="line">&#125;;                     <span class="comment">// 整体占用4字节</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">TEST</span>(build_in, <span class="number">1</span>) &#123;</span><br><span class="line">  S s = &#123;<span class="number">0x12345678</span>&#125;;  <span class="comment">// 初始化第一个成员，当前s.n为活跃成员</span></span><br><span class="line">  <span class="comment">// 于此点，读取 s.s 或 s.c 是未定义行为</span></span><br><span class="line">  std::cout &lt;&lt; std::hex &lt;&lt; <span class="string">&quot;s.n = &quot;</span> &lt;&lt; s.n &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">  s.s[<span class="number">0</span>] = <span class="number">0x0011</span>;  <span class="comment">// s.s 现在是活跃成员</span></span><br><span class="line">  <span class="comment">// 在此点，读取 s.n 或 s.c 是未定义行为</span></span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;s.c is now &quot;</span> &lt;&lt; +s.c &lt;&lt; <span class="string">&#x27;\n&#x27;</span>  <span class="comment">// 11 or 00, 依赖平台实现</span></span><br><span class="line">            &lt;&lt; <span class="string">&quot;s.n is now &quot;</span> &lt;&lt; s.n &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;  <span class="comment">// 12340011 or 00115678</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>这个很好理解, c++只是提供了一块内存, 保证可以放下最大的, 怎么解析是程序员的事情</li>
+</ol>
+<h2 id="对于非POD对象"><a href="#对于非POD对象" class="headerlink" title="对于非POD对象"></a>对于非POD对象</h2><h3 id="用于测试的c-class"><a href="#用于测试的c-class" class="headerlink" title="用于测试的c++ class:"></a>用于测试的c++ class:</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> MyT &#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  std::string name&#123;&#125;;</span><br><span class="line">  <span class="function">std::string <span class="title">ToString</span><span class="params">()</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;MyClass:&quot;</span> + name + <span class="string">&quot;\t@&quot;</span> + std::<span class="built_in">to_string</span>((<span class="type">intptr_t</span>)<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">MyClass</span>()&#123;<span class="built_in">LOG_DEBUG</span>(<span class="built_in">ToString</span>())&#125;;</span><br><span class="line">  <span class="built_in">MyClass</span>(<span class="type">const</span> std::string&amp; _name) &#123;</span><br><span class="line">    name = _name;</span><br><span class="line">    <span class="built_in">LOG_DEBUG</span>(<span class="built_in">ToString</span>())</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">MyClass</span>(<span class="type">const</span> MyClass&amp; obj) &#123;</span><br><span class="line">    name = obj.name;</span><br><span class="line">    <span class="built_in">LOG_DEBUG</span>(<span class="string">&quot;this: &quot;</span> &lt;&lt; <span class="built_in">ToString</span>() &lt;&lt; <span class="string">&quot;\tobj: &quot;</span> &lt;&lt; obj.<span class="built_in">ToString</span>())</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="built_in">MyClass</span>(MyClass&amp;&amp; obj) &#123;</span><br><span class="line">    <span class="built_in">LOG_DEBUG</span>(<span class="string">&quot;\tobj: &quot;</span> &lt;&lt; obj.<span class="built_in">ToString</span>())</span><br><span class="line">    std::<span class="built_in">swap</span>(name, obj.name);</span><br><span class="line">    <span class="built_in">LOG_DEBUG</span>(<span class="string">&quot;this: &quot;</span> &lt;&lt; <span class="built_in">ToString</span>())</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">virtual</span> ~<span class="built_in">MyClass</span>()&#123;<span class="built_in">LOG_DEBUG</span>(<span class="built_in">ToString</span>())&#125;;</span><br><span class="line">  MyClass&amp; <span class="keyword">operator</span>=(<span class="type">const</span> MyClass&amp; obj) &#123;</span><br><span class="line">    <span class="built_in">LOG_DEBUG</span>(<span class="string">&quot;this: &quot;</span> &lt;&lt; <span class="built_in">ToString</span>() &lt;&lt; <span class="string">&quot;\tobj: &quot;</span> &lt;&lt; obj.<span class="built_in">ToString</span>())</span><br><span class="line">    name = obj.name;</span><br><span class="line">    <span class="built_in">LOG_DEBUG</span>(<span class="string">&quot;this: &quot;</span> &lt;&lt; <span class="built_in">ToString</span>() &lt;&lt; <span class="string">&quot;\tobj: &quot;</span> &lt;&lt; obj.<span class="built_in">ToString</span>())</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  MyClass&amp; <span class="keyword">operator</span>=(MyClass&amp;&amp; obj) &#123;</span><br><span class="line">    <span class="built_in">LOG_DEBUG</span>(<span class="string">&quot;\tobj: &quot;</span> &lt;&lt; obj.<span class="built_in">ToString</span>())</span><br><span class="line">    std::<span class="built_in">swap</span>(name, obj.name);</span><br><span class="line">    <span class="built_in">LOG_DEBUG</span>(<span class="string">&quot;this: &quot;</span> &lt;&lt; <span class="built_in">ToString</span>())</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line">&#125;  <span class="comment">// namespace MyT</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>调用构造, 拷贝, 移动, 析构时都打条log, 方便我们定位</li>
+<li>测试代码:<ol>
+<li>需要注意: <code>MyClass c4 = c2</code> 会调用复制构造函数, <code>MyClass c5; c5 = c2;</code> 才会调用operator&#x3D;(&amp;)</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">TEST</span>(my_class, <span class="number">1</span>) &#123;</span><br><span class="line">  <span class="keyword">using</span> MyT::MyClass;</span><br><span class="line">  MyClass c1&#123;&#125;;</span><br><span class="line">  MyClass c2&#123;<span class="string">&quot;khalid&quot;</span>&#125;;</span><br><span class="line">  <span class="function">MyClass <span class="title">c3</span><span class="params">(c2)</span></span>;</span><br><span class="line">  <span class="comment">// 没有调用 operator= 而是使用了复制构造函数, 这是为了做优化</span></span><br><span class="line">  <span class="comment">// 而赋值操作符要求‘=’的左右对象均已存在，它的作用就是把‘=’右边的对象的值赋给左边的对象</span></span><br><span class="line">  MyClass c4 = c2;</span><br><span class="line">  <span class="comment">// 这种 的左右对象均已存在 才会</span></span><br><span class="line">  MyClass c5;</span><br><span class="line">  c5 = c2;</span><br><span class="line">  <span class="function">MyClass <span class="title">c6</span><span class="params">(std::move(c2))</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[1]    [debug]    [MyClass:	@140733882434096]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:44    MyT::MyClass::MyClass()]     [2021-05-25 11:04:36.885673]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line"> [2]    [debug]    [MyClass:khalid	@140733882434080]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:47    MyT::MyClass::MyClass(const string&amp;)]     [2021-05-25 11:04:36.885830]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line"> [3]    [debug]    [this: MyClass:khalid	@140733882434064	obj: MyClass:khalid	@140733882434080]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:51    MyT::MyClass::MyClass(const MyT::MyClass&amp;)]     [2021-05-25 11:04:36.885914]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line"> [4]    [debug]    [this: MyClass:khalid	@140733882434048	obj: MyClass:khalid	@140733882434080]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:51    MyT::MyClass::MyClass(const MyT::MyClass&amp;)]     [2021-05-25 11:04:36.885991]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line"> [5]    [debug]    [MyClass:	@140733882434032]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:44    MyT::MyClass::MyClass()]     [2021-05-25 11:04:36.886049]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line"> [6]    [debug]    [this: MyClass:	@140733882434032	obj: MyClass:khalid	@140733882434080]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:60    MyT::MyClass&amp; MyT::MyClass::operator=(const MyT::MyClass&amp;)]     [2021-05-25 11:04:36.886101]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line"> [7]    [debug]    [this: MyClass:khalid	@140733882434032	obj: MyClass:khalid	@140733882434080]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:62    MyT::MyClass&amp; MyT::MyClass::operator=(const MyT::MyClass&amp;)]     [2021-05-25 11:04:36.886158]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line"> [8]    [debug]    [	obj: MyClass:khalid	@140733882434080]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:54    MyT::MyClass::MyClass(MyT::MyClass&amp;&amp;)]     [2021-05-25 11:04:36.886211]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line"> [9]    [debug]    [this: MyClass:khalid	@140733882434016]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:56    MyT::MyClass::MyClass(MyT::MyClass&amp;&amp;)]     [2021-05-25 11:04:36.886264]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line"> [10]    [debug]    [MyClass:khalid	@140733882434016]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:58    virtual MyT::MyClass::~MyClass()]     [2021-05-25 11:04:36.886315]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line"> [11]    [debug]    [MyClass:khalid	@140733882434032]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:58    virtual MyT::MyClass::~MyClass()]     [2021-05-25 11:04:36.886365]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line"> [12]    [debug]    [MyClass:khalid	@140733882434048]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:58    virtual MyT::MyClass::~MyClass()]     [2021-05-25 11:04:36.886416]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line"> [13]    [debug]    [MyClass:khalid	@140733882434064]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:58    virtual MyT::MyClass::~MyClass()]     [2021-05-25 11:04:36.886466]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line"> [14]    [debug]    [MyClass:	@140733882434080]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:58    virtual MyT::MyClass::~MyClass()]     [2021-05-25 11:04:36.886515]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line"> [15]    [debug]    [MyClass:	@140733882434096]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:58    virtual MyT::MyClass::~MyClass()]     [2021-05-25 11:04:36.886564]    [0x00005efc]    [0x00007f3d8c6ad780]    []</span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+<h3 id="包含非POD的union"><a href="#包含非POD的union" class="headerlink" title="包含非POD的union"></a>包含非POD的union</h3><h4 id="一个错误的例子"><a href="#一个错误的例子" class="headerlink" title="一个错误的例子"></a>一个错误的例子</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// error</span></span><br><span class="line"><span class="keyword">namespace</span> t0 &#123;</span><br><span class="line"><span class="keyword">union</span> <span class="title class_">A</span> &#123;</span><br><span class="line">  <span class="type">int</span> a;</span><br><span class="line">  <span class="type">double</span> b;</span><br><span class="line">  std::string c;</span><br><span class="line">  MyClass d;</span><br><span class="line">  std::shared_ptr&lt;MyClass&gt; e;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// default constructor of &#x27;A0&#x27; is implicitly deleted because variant field &#x27;c&#x27;</span></span><br><span class="line"><span class="comment">// has a non-trivial default constructor</span></span><br><span class="line"> <span class="comment">// c 不是平凡类型, 必须自定义构造函数</span></span><br><span class="line"><span class="built_in">TEST</span>(adt,<span class="number">1</span>)</span><br><span class="line">&#123;</span><br><span class="line">  A s;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>无法通过编译, c 不是POD对象, 必须自定义构造函数</li>
+</ol>
+<h4 id="一个可用的例子"><a href="#一个可用的例子" class="headerlink" title="一个可用的例子"></a>一个可用的例子</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 主动调用析构函数, 包装下免得调错</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">DestoryAt</span><span class="params">(T&amp; t)</span> </span>&#123;</span><br><span class="line">  t.~<span class="built_in">T</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> t1 &#123;</span><br><span class="line"><span class="keyword">union</span> <span class="title class_">A</span> &#123;</span><br><span class="line">  std::string c;</span><br><span class="line">  MyT::MyClass d;</span><br><span class="line">  std::shared_ptr&lt;MyT::MyClass&gt; e;</span><br><span class="line">  <span class="built_in">A</span>() &#123;&#125;  <span class="comment">// 因为std::string拥有是非平凡的的数据类型，</span></span><br><span class="line">  ~<span class="built_in">A</span>() &#123;&#125;  <span class="comment">// 则A必须自定义构造函数和析构函数，否则无法进行实例化</span></span><br><span class="line">  <span class="comment">// 如果想实现复制语义，还得自定义复制(构造)函数</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">TEST</span>(adt, <span class="number">1</span>) &#123;</span><br><span class="line">  A s;</span><br><span class="line">  <span class="comment">// 激活 d</span></span><br><span class="line">  <span class="keyword">new</span> (&amp;s.d) MyT::<span class="built_in">MyClass</span>();</span><br><span class="line">  <span class="comment">// d可以使用了</span></span><br><span class="line">  s.d.name = <span class="string">&quot;in union&quot;</span>;</span><br><span class="line">  <span class="built_in">LOG_DEBUG</span>(<span class="string">&quot;&amp;s.d &quot;</span> &lt;&lt; &amp;s.d)</span><br><span class="line">  <span class="comment">// 必须手动释放 d</span></span><br><span class="line">  <span class="comment">// union 不会自动调用析构函数</span></span><br><span class="line">  <span class="comment">// 下面两种方法都行, 包装下免得调错</span></span><br><span class="line">  <span class="built_in">DestoryAt</span>(s.d);</span><br><span class="line">  <span class="comment">//  s.d.~MyClass();</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 激活e</span></span><br><span class="line">  <span class="keyword">new</span> (&amp;s.e) std::<span class="built_in">shared_ptr</span>&lt;MyT::MyClass&gt;();</span><br><span class="line">  <span class="comment">// 初始化一个 MyClass</span></span><br><span class="line">  s.e = std::<span class="built_in">make_shared</span>&lt;MyT::MyClass&gt;();</span><br><span class="line">  s.e-&gt;name = <span class="string">&quot;union ptr&quot;</span>;</span><br><span class="line">  <span class="comment">// 释放e</span></span><br><span class="line">  <span class="built_in">DestoryAt</span>(s.e);</span><br><span class="line">&#125;</span><br><span class="line">&#125;  <span class="comment">// namespace t1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[1]    [debug]    [MyClass:	@140730698243312]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:44    MyT::MyClass::MyClass()]     [2021-05-25 11:13:42.707161]    [0x0000648e]    [0x00007f5df07a5780]    []</span><br><span class="line">[2]    [debug]    [&amp;s.d 0x7ffe6b471cf0]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:126    virtual void t1::adt_1_Test::TestBody()]     [2021-05-25 11:13:42.707324]    [0x0000648e]    [0x00007f5df07a5780]    []</span><br><span class="line">[3]    [debug]    [MyClass:in union	@140730698243312]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:58    virtual MyT::MyClass::~MyClass()]     [2021-05-25 11:13:42.707407]    [0x0000648e]    [0x00007f5df07a5780]    []</span><br><span class="line">[4]    [debug]    [MyClass:	@22852584]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:44    MyT::MyClass::MyClass()]     [2021-05-25 11:13:42.707480]    [0x0000648e]    [0x00007f5df07a5780]    []</span><br><span class="line">[5]    [debug]    [MyClass:union ptr	@22852584]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:58    virtual MyT::MyClass::~MyClass()]     [2021-05-25 11:13:42.707535]    [0x0000648e]    [0x00007f5df07a5780]    []</span><br></pre></td></tr></table></figure>
+<ol>
+<li>这里构造和析构函数啥都没干, 也就是说不会自动构造和析构</li>
+<li>我们必须手动构造(使用 placement new), 手动析构(显示调用~ClassName())</li>
+<li>但这是证明union中放非POD对象是可行的</li>
+</ol>
+<h4 id="一种常见的封装方式"><a href="#一种常见的封装方式" class="headerlink" title="一种常见的封装方式"></a>一种常见的封装方式</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> t2 &#123;</span><br><span class="line"><span class="comment">// 使用struct包装</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SA</span> &#123;</span><br><span class="line">  <span class="keyword">enum class</span> <span class="title class_">Tag</span> : <span class="type">int</span> &#123;</span><br><span class="line">    STRING = <span class="number">0</span>,</span><br><span class="line">    MY_CLASS,</span><br><span class="line">    MY_CLASS_SPTR,</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="type">const</span> Tag tag;</span><br><span class="line">  <span class="keyword">union</span> &#123;</span><br><span class="line">    std::string c;</span><br><span class="line">    MyT::MyClass d;</span><br><span class="line">    std::shared_ptr&lt;MyT::MyClass&gt; e;</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="built_in">SA</span>() = <span class="keyword">delete</span>;</span><br><span class="line">  <span class="comment">// TODO</span></span><br><span class="line">  <span class="built_in">SA</span>(<span class="type">const</span> SA&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">  <span class="built_in">SA</span>(<span class="type">const</span> SA&amp;&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">  SA&amp; <span class="keyword">operator</span>=(<span class="type">const</span> SA&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">  SA&amp; <span class="keyword">operator</span>=(SA&amp;&amp;) = <span class="keyword">delete</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="built_in">SA</span>(Tag t) : <span class="built_in">tag</span>(t) &#123;</span><br><span class="line">    <span class="keyword">switch</span> (tag) &#123;</span><br><span class="line">      <span class="keyword">case</span> Tag::STRING:</span><br><span class="line">        <span class="keyword">new</span> (&amp;c) <span class="keyword">decltype</span>(c);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> Tag::MY_CLASS:</span><br><span class="line">        <span class="keyword">new</span> (&amp;d) <span class="keyword">decltype</span>(d);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> Tag::MY_CLASS_SPTR:</span><br><span class="line">        <span class="keyword">new</span> (&amp;e) <span class="keyword">decltype</span>(e);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">        <span class="built_in">assert</span>(<span class="literal">false</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">virtual</span> ~<span class="built_in">SA</span>() &#123;</span><br><span class="line">    <span class="keyword">switch</span> (tag) &#123;</span><br><span class="line">      <span class="keyword">case</span> Tag::STRING:</span><br><span class="line">        <span class="built_in">DestoryAt</span>(c);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> Tag::MY_CLASS:</span><br><span class="line">        <span class="built_in">DestoryAt</span>(d);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> Tag::MY_CLASS_SPTR:</span><br><span class="line">        <span class="built_in">DestoryAt</span>(e);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">        <span class="built_in">assert</span>(<span class="literal">false</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">TEST</span>(adt, struct_type) &#123;</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="function">SA <span class="title">myclass</span><span class="params">(SA::Tag::MY_CLASS)</span></span>;</span><br><span class="line">    myclass.d.name = <span class="string">&quot;SA&quot;</span>;</span><br><span class="line">    <span class="built_in">LOG_DEBUG</span>(myclass.d.<span class="built_in">ToString</span>());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="function">SA <span class="title">myclassPtr</span><span class="params">(SA::Tag::MY_CLASS_SPTR)</span></span>;</span><br><span class="line">    myclassPtr.e = std::<span class="built_in">make_shared</span>&lt;<span class="keyword">decltype</span>(myclassPtr.e)::element_type&gt;();</span><br><span class="line">    myclassPtr.e-&gt;name = <span class="string">&quot;SAP&quot;</span>;</span><br><span class="line">    <span class="built_in">LOG_DEBUG</span>(myclassPtr.e-&gt;<span class="built_in">ToString</span>());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;  <span class="comment">// namespace t2</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[1]    [debug]    [MyClass:	@140731968851312]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:44    MyT::MyClass::MyClass()]     [2021-05-25 11:15:15.048335]    [0x0000659b]    [0x00007fec328fe780]    []</span><br><span class="line">[2]    [debug]    [MyClass:SA	@140731968851312]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:203    virtual void t2::adt_struct_type_Test::TestBody()]     [2021-05-25 11:15:15.048452]    [0x0000659b]    [0x00007fec328fe780]    []</span><br><span class="line">[3]    [debug]    [MyClass:SA	@140731968851312]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:58    virtual MyT::MyClass::~MyClass()]     [2021-05-25 11:15:15.048486]    [0x0000659b]    [0x00007fec328fe780]    []</span><br><span class="line">[4]    [debug]    [MyClass:	@26641416]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:44    MyT::MyClass::MyClass()]     [2021-05-25 11:15:15.048515]    [0x0000659b]    [0x00007fec328fe780]    []</span><br><span class="line">[5]    [debug]    [MyClass:SAP	@26641416]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:210    virtual void t2::adt_struct_type_Test::TestBody()]     [2021-05-25 11:15:15.048543]    [0x0000659b]    [0x00007fec328fe780]    []</span><br><span class="line">[6]    [debug]    [MyClass:SAP	@26641416]   [/tmp/tmp.s62aUyvWJo/src/cpp_language/union_adt_test/main.cpp:58    virtual MyT::MyClass::~MyClass()]     [2021-05-25 11:15:15.048571]    [0x0000659b]    [0x00007fec328fe780]    []</span><br></pre></td></tr></table></figure>
+<ol>
+<li>这里使用 TLV的思路, 使用Tag+Value进行封装, 使用struct进行包装</li>
+<li>这样外部使用的时候就类似在使用一个struct而非union, 实现自动构造&amp;析构</li>
+<li>当然, 这只是个简单的例子, 实际使用的时候, 还可以实现各种构造函数和operator, 使他更像struct, 还可以把union对象private化, 使用函数获取, 这样就可以校验类型是否对的上<ol>
+<li>当然, 一般都是用脚本生成的, 我在项目中是用Python写了个protobuf 的protoc后端, 用jinja2直接渲染出代码用</li>
+</ol>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/03/cmake-execute-process-%E7%94%A8%E6%B3%95/" rel="prev" title="cmake execute_process 用法">
+      <i class="fa fa-chevron-left"></i> cmake execute_process 用法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/08/cpython-PyObject-%E7%BB%A7%E6%89%BF%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0/" rel="next" title="cpython PyObject 继承机制的实现">
+      cpython PyObject 继承机制的实现 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#c-union-%E4%B8%AD%E4%BD%BF%E7%94%A8%E9%9D%9EPOD%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.</span> <span class="nav-text">c++ union 中使用非POD对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">c++ 定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8EPOD%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.</span> <span class="nav-text">对于POD数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E9%9D%9EPOD%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.3.</span> <span class="nav-text">对于非POD对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E4%BA%8E%E6%B5%8B%E8%AF%95%E7%9A%84c-class"><span class="nav-number">1.3.1.</span> <span class="nav-text">用于测试的c++ class:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%85%E5%90%AB%E9%9D%9EPOD%E7%9A%84union"><span class="nav-number">1.3.2.</span> <span class="nav-text">包含非POD的union</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E9%94%99%E8%AF%AF%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">一个错误的例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%8F%AF%E7%94%A8%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">一个可用的例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%9A%84%E5%B0%81%E8%A3%85%E6%96%B9%E5%BC%8F"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">一种常见的封装方式</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">puzzzzzzle</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">puzzzzzzle</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

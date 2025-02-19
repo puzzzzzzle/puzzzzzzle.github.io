@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"puzzzzzzle.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="总结 测试cpo与tag_invoke时, 反汇编发现有些理应inline的函数, 并没有真的inline, 于是打算测试下inline的机制 gcc文档: https:&#x2F;&#x2F;gcc.gnu.org&#x2F;onlinedocs&#x2F;gcc&#x2F;Inline.html#Inline 总的来说, inline只是标记, 让编译器可以的话进行内联, 但是具体是否内联, 还是要看编译器决定 我们就没有办法自己定了吗? 一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++ inline测试">
+<meta property="og:url" content="https://puzzzzzzle.github.io/2022/12/23/c-inline%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="puzzzzzzle&#39;s blog">
+<meta property="og:description" content="总结 测试cpo与tag_invoke时, 反汇编发现有些理应inline的函数, 并没有真的inline, 于是打算测试下inline的机制 gcc文档: https:&#x2F;&#x2F;gcc.gnu.org&#x2F;onlinedocs&#x2F;gcc&#x2F;Inline.html#Inline 总的来说, inline只是标记, 让编译器可以的话进行内联, 但是具体是否内联, 还是要看编译器决定 我们就没有办法自己定了吗? 一">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-23T07:46:17.000Z">
+<meta property="article:modified_time" content="2025-02-18T03:24:10.080Z">
+<meta property="article:author" content="puzzzzzzle">
+<meta property="article:tag" content="program">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://puzzzzzzle.github.io/2022/12/23/c-inline%E6%B5%8B%E8%AF%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>c++ inline测试 | puzzzzzzle's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">puzzzzzzle's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">BLOG</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2022/12/23/c-inline%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="puzzzzzzle">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="puzzzzzzle's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          c++ inline测试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-12-23 15:46:17" itemprop="dateCreated datePublished" datetime="2022-12-23T15:46:17+08:00">2022-12-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-18 11:24:10" itemprop="dateModified" datetime="2025-02-18T11:24:10+08:00">2025-02-18</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>测试cpo与tag_invoke时, 反汇编发现有些理应inline的函数, 并没有真的inline, 于是打算测试下inline的机制</li>
+<li>gcc文档: <a target="_blank" rel="noopener" href="https://gcc.gnu.org/onlinedocs/gcc/Inline.html#Inline">https://gcc.gnu.org/onlinedocs/gcc/Inline.html#Inline</a></li>
+<li>总的来说, inline只是标记, 让编译器可以的话进行内联, 但是具体是否内联, 还是要看编译器决定</li>
+<li>我们就没有办法自己定了吗?</li>
+<li>一般编译时, 会通过-O0 -O1 -O3 之类的编译选项来控制</li>
+<li>通过<code>gcc -Q --help=optimizers -O3</code>命令 我们可以看到不同的编译选项下的开关</li>
+<li>当然, 也是可以在编译时强制指定编译选项</li>
+<li>也可以用<code>inline void foo (const char) __attribute__((always_inline));</code>格式来强制内联</li>
+</ul>
+<h2 id="编译选项"><a href="#编译选项" class="headerlink" title="编译选项"></a>编译选项</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># gcc -Q --help=optimizers -O3|grep -i inline</span><br><span class="line">-ffold-simple-inlines                 [available in C++, ObjC++]</span><br><span class="line">-finline                              [enabled]</span><br><span class="line">-finline-atomics                      [enabled]</span><br><span class="line">-finline-functions                    [enabled]</span><br><span class="line">-finline-functions-called-once        [enabled]</span><br><span class="line">-finline-small-functions              [enabled]</span><br><span class="line">-flive-patching                       -flive-patching=inline-clone</span><br><span class="line">-flive-patching=[inline-only-static|inline-clone]     [default]</span><br><span class="line"></span><br><span class="line"># gcc -Q --help=optimizers -O0|grep -i inline</span><br><span class="line">-ffold-simple-inlines                 [available in C++, ObjC++]</span><br><span class="line">-finline                              [disabled]</span><br><span class="line">-finline-atomics                      [enabled]</span><br><span class="line">-finline-functions                    [disabled]</span><br><span class="line">-finline-functions-called-once        [disabled]</span><br><span class="line">-finline-small-functions              [disabled]</span><br><span class="line">-flive-patching                       -flive-patching=inline-clone</span><br><span class="line">-flive-patching=[inline-only-static|inline-clone]     [default]</span><br></pre></td></tr></table></figure>
+<h2 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> true</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> print_i printf(<span class="string">&quot;%d&quot;</span>, i);</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> print_i</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BODY() \</span></span><br><span class="line"><span class="meta">  int i = 0;   \</span></span><br><span class="line"><span class="meta">  i += 10;     \</span></span><br><span class="line"><span class="meta">  print_i</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">no_inline_func</span><span class="params">()</span> </span>&#123; <span class="built_in">BODY</span>() &#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">inline_func</span><span class="params">()</span> </span>&#123; <span class="built_in">BODY</span>() &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Holder</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">no_inline_class_func</span><span class="params">()</span> </span>&#123; <span class="built_in">BODY</span>() &#125;</span><br><span class="line">  <span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">inline_class_func</span><span class="params">()</span> </span>&#123; <span class="built_in">BODY</span>() &#125;</span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">template_no_inline_class_func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">BODY</span>()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line">  <span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">template_inline_class_func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">BODY</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line">  <span class="built_in">no_inline_func</span>();</span><br><span class="line">  <span class="built_in">inline_func</span>();</span><br><span class="line">  Holder h&#123;&#125;;</span><br><span class="line">  h.<span class="built_in">no_inline_class_func</span>();</span><br><span class="line">  h.<span class="built_in">inline_class_func</span>();</span><br><span class="line">  h.<span class="built_in">template_no_inline_class_func</span>&lt;<span class="type">int</span>&gt;();</span><br><span class="line">  h.<span class="built_in">template_inline_class_func</span>&lt;<span class="type">int</span>&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<h3 id="反汇编"><a href="#反汇编" class="headerlink" title="反汇编"></a>反汇编</h3><h4 id="O3选项下-基本开启了全部内联选项-和代码裁减"><a href="#O3选项下-基本开启了全部内联选项-和代码裁减" class="headerlink" title="-O3选项下, 基本开启了全部内联选项, 和代码裁减"></a>-O3选项下, 基本开启了全部内联选项, 和代码裁减</h4><ul>
+<li>关闭print, BODY()的内容都可以裁掉了, i没有被用到, 属于无用分支</li>
+<li>基本被裁减干净了</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">0000000000001040 &lt;main&gt;:</span><br><span class="line">    1040:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    1044:	48 83 ec 08          	sub    $0x8,%rsp</span><br><span class="line">    1048:	e8 13 01 00 00       	call   1160 &lt;_Z14no_inline_funcv&gt;</span><br><span class="line">    104d:	31 c0                	xor    %eax,%eax</span><br><span class="line">    104f:	48 83 c4 08          	add    $0x8,%rsp</span><br><span class="line">    1053:	c3                   	ret    </span><br><span class="line">    1054:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)</span><br><span class="line">    105b:	00 00 00 </span><br><span class="line">    105e:	66 90                	xchg   %ax,%ax</span><br><span class="line">    </span><br><span class="line">0000000000001160 &lt;_Z14no_inline_funcv&gt;:</span><br><span class="line">    1160:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    1164:	c3                   	ret    </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>开启print 也基本都内联了</li>
+<li>除了no_inline_func外, 全部原地展开了</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">00000000000011e0 &lt;_Z14no_inline_funcv&gt;:</span><br><span class="line">    11e0:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    11e4:	ba 0a 00 00 00       	mov    $0xa,%edx</span><br><span class="line">    11e9:	48 8d 35 14 0e 00 00 	lea    0xe14(%rip),%rsi        # 2004 &lt;_IO_stdin_used+0x4&gt;</span><br><span class="line">    11f0:	bf 01 00 00 00       	mov    $0x1,%edi</span><br><span class="line">    11f5:	31 c0                	xor    %eax,%eax</span><br><span class="line">    11f7:	e9 54 fe ff ff       	jmp    1050 &lt;__printf_chk@plt&gt;</span><br><span class="line">0000000000001060 &lt;main&gt;:</span><br><span class="line">1060:	f3 0f 1e fa          	endbr64</span><br><span class="line">1064:	53                   	push   %rbx</span><br><span class="line">1065:	48 8d 1d 98 0f 00 00 	lea    0xf98(%rip),%rbx        # 2004 &lt;_IO_stdin_used+0x4&gt;</span><br><span class="line">106c:	e8 6f 01 00 00       	call   11e0 &lt;_Z14no_inline_funcv&gt;</span><br><span class="line">1071:	48 89 de             	mov    %rbx,%rsi</span><br><span class="line">1074:	ba 0a 00 00 00       	mov    $0xa,%edx</span><br><span class="line">1079:	31 c0                	xor    %eax,%eax</span><br><span class="line">107b:	bf 01 00 00 00       	mov    $0x1,%edi</span><br><span class="line">1080:	e8 cb ff ff ff       	call   1050 &lt;__printf_chk@plt&gt;</span><br><span class="line">1085:	48 89 de             	mov    %rbx,%rsi</span><br><span class="line">1088:	ba 0a 00 00 00       	mov    $0xa,%edx</span><br><span class="line">108d:	31 c0                	xor    %eax,%eax</span><br><span class="line">108f:	bf 01 00 00 00       	mov    $0x1,%edi</span><br><span class="line">1094:	e8 b7 ff ff ff       	call   1050 &lt;__printf_chk@plt&gt;</span><br><span class="line">1099:	48 89 de             	mov    %rbx,%rsi</span><br><span class="line">109c:	ba 0a 00 00 00       	mov    $0xa,%edx</span><br><span class="line">10a1:	31 c0                	xor    %eax,%eax</span><br><span class="line">10a3:	bf 01 00 00 00       	mov    $0x1,%edi</span><br><span class="line">10a8:	e8 a3 ff ff ff       	call   1050 &lt;__printf_chk@plt&gt;</span><br><span class="line">10ad:	48 89 de             	mov    %rbx,%rsi</span><br><span class="line">10b0:	ba 0a 00 00 00       	mov    $0xa,%edx</span><br><span class="line">10b5:	31 c0                	xor    %eax,%eax</span><br><span class="line">10b7:	bf 01 00 00 00       	mov    $0x1,%edi</span><br><span class="line">10bc:	e8 8f ff ff ff       	call   1050 &lt;__printf_chk@plt&gt;</span><br><span class="line">10c1:	48 89 de             	mov    %rbx,%rsi</span><br><span class="line">10c4:	ba 0a 00 00 00       	mov    $0xa,%edx</span><br><span class="line">10c9:	31 c0                	xor    %eax,%eax</span><br><span class="line">10cb:	bf 01 00 00 00       	mov    $0x1,%edi</span><br><span class="line">10d0:	e8 7b ff ff ff       	call   1050 &lt;__printf_chk@plt&gt;</span><br><span class="line">10d5:	31 c0                	xor    %eax,%eax</span><br><span class="line">10d7:	5b                   	pop    %rbx</span><br><span class="line">10d8:	c3                   	ret    </span><br><span class="line">10d9:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="O0选项下"><a href="#O0选项下" class="headerlink" title="-O0选项下"></a>-O0选项下</h4><ul>
+<li>基本关掉了所有内联选项</li>
+<li>无论是否是有需要的分支, 全部编译到目标中了</li>
+<li>这里对于没有内联的函数, 只保留了一个, 其他的都相似, 省略掉了</li>
+<li>开启打印</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">000000000000128a &lt;_ZN6Holder17inline_class_funcEv&gt;:</span><br><span class="line">    128a:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    128e:	55                   	push   %rbp</span><br><span class="line">    128f:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">    1292:	48 83 ec 20          	sub    $0x20,%rsp</span><br><span class="line">    1296:	48 89 7d e8          	mov    %rdi,-0x18(%rbp)</span><br><span class="line">    129a:	c7 45 fc 00 00 00 00 	movl   $0x0,-0x4(%rbp)</span><br><span class="line">    12a1:	83 45 fc 0a          	addl   $0xa,-0x4(%rbp)</span><br><span class="line">    12a5:	8b 45 fc             	mov    -0x4(%rbp),%eax</span><br><span class="line">    12a8:	89 c6                	mov    %eax,%esi</span><br><span class="line">    12aa:	48 8d 05 53 0d 00 00 	lea    0xd53(%rip),%rax        # 2004 &lt;_IO_stdin_used+0x4&gt;</span><br><span class="line">    12b1:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    12b4:	b8 00 00 00 00       	mov    $0x0,%eax</span><br><span class="line">    12b9:	e8 b2 fd ff ff       	call   1070 &lt;printf@plt&gt;</span><br><span class="line">    12be:	90                   	nop</span><br><span class="line">    12bf:	c9                   	leave  </span><br><span class="line">    12c0:	c3                   	ret    </span><br><span class="line">    12c1:	90                   	nop</span><br><span class="line">    </span><br><span class="line">00000000000011a7 &lt;main&gt;:</span><br><span class="line">    11a7:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    11ab:	55                   	push   %rbp</span><br><span class="line">    11ac:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">    11af:	48 83 ec 20          	sub    $0x20,%rsp</span><br><span class="line">    11b3:	89 7d ec             	mov    %edi,-0x14(%rbp)</span><br><span class="line">    11b6:	48 89 75 e0          	mov    %rsi,-0x20(%rbp)</span><br><span class="line">    11ba:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax</span><br><span class="line">    11c1:	00 00 </span><br><span class="line">    11c3:	48 89 45 f8          	mov    %rax,-0x8(%rbp)</span><br><span class="line">    11c7:	31 c0                	xor    %eax,%eax</span><br><span class="line">    11c9:	e8 a6 ff ff ff       	call   1174 &lt;_Z14no_inline_funcv&gt;</span><br><span class="line">    11ce:	e8 4b 00 00 00       	call   121e &lt;_Z11inline_funcv&gt;</span><br><span class="line">    11d3:	48 8d 45 f7          	lea    -0x9(%rbp),%rax</span><br><span class="line">    11d7:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    11da:	e8 73 00 00 00       	call   1252 &lt;_ZN6Holder20no_inline_class_funcEv&gt;</span><br><span class="line">    11df:	48 8d 45 f7          	lea    -0x9(%rbp),%rax</span><br><span class="line">    11e3:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    11e6:	e8 9f 00 00 00       	call   128a &lt;_ZN6Holder17inline_class_funcEv&gt;</span><br><span class="line">    11eb:	48 8d 45 f7          	lea    -0x9(%rbp),%rax</span><br><span class="line">    11ef:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    11f2:	e8 cb 00 00 00       	call   12c2 &lt;_ZN6Holder29template_no_inline_class_funcIiEEvv&gt;</span><br><span class="line">    11f7:	48 8d 45 f7          	lea    -0x9(%rbp),%rax</span><br><span class="line">    11fb:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    11fe:	e8 f7 00 00 00       	call   12fa &lt;_ZN6Holder26template_inline_class_funcIiEEvv&gt;</span><br><span class="line">    1203:	b8 00 00 00 00       	mov    $0x0,%eax</span><br><span class="line">    1208:	48 8b 55 f8          	mov    -0x8(%rbp),%rdx</span><br><span class="line">    120c:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx</span><br><span class="line">    1213:	00 00 </span><br><span class="line">    1215:	74 05                	je     121c &lt;main+0x75&gt;</span><br><span class="line">    1217:	e8 44 fe ff ff       	call   1060 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">    121c:	c9                   	leave  </span><br><span class="line">    121d:	c3                   	ret    </span><br></pre></td></tr></table></figure>
+<ul>
+<li>关闭打印</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">0000000000001206 &lt;_ZN6Holder17inline_class_funcEv&gt;:</span><br><span class="line">    1206:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    120a:	55                   	push   %rbp</span><br><span class="line">    120b:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">    120e:	48 89 7d e8          	mov    %rdi,-0x18(%rbp)</span><br><span class="line">    1212:	c7 45 fc 00 00 00 00 	movl   $0x0,-0x4(%rbp)</span><br><span class="line">    1219:	83 45 fc 0a          	addl   $0xa,-0x4(%rbp)</span><br><span class="line">    121d:	90                   	nop</span><br><span class="line">    121e:	5d                   	pop    %rbp</span><br><span class="line">    121f:	c3                   	ret    </span><br><span class="line"></span><br><span class="line">000000000000115f &lt;main&gt;:</span><br><span class="line">    115f:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    1163:	55                   	push   %rbp</span><br><span class="line">    1164:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">    1167:	48 83 ec 20          	sub    $0x20,%rsp</span><br><span class="line">    116b:	89 7d ec             	mov    %edi,-0x14(%rbp)</span><br><span class="line">    116e:	48 89 75 e0          	mov    %rsi,-0x20(%rbp)</span><br><span class="line">    1172:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax</span><br><span class="line">    1179:	00 00 </span><br><span class="line">    117b:	48 89 45 f8          	mov    %rax,-0x8(%rbp)</span><br><span class="line">    117f:	31 c0                	xor    %eax,%eax</span><br><span class="line">    1181:	e8 c3 ff ff ff       	call   1149 &lt;_Z14no_inline_funcv&gt;</span><br><span class="line">    1186:	e8 4b 00 00 00       	call   11d6 &lt;_Z11inline_funcv&gt;</span><br><span class="line">    118b:	48 8d 45 f7          	lea    -0x9(%rbp),%rax</span><br><span class="line">    118f:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    1192:	e8 55 00 00 00       	call   11ec &lt;_ZN6Holder20no_inline_class_funcEv&gt;</span><br><span class="line">    1197:	48 8d 45 f7          	lea    -0x9(%rbp),%rax</span><br><span class="line">    119b:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    119e:	e8 63 00 00 00       	call   1206 &lt;_ZN6Holder17inline_class_funcEv&gt;</span><br><span class="line">    11a3:	48 8d 45 f7          	lea    -0x9(%rbp),%rax</span><br><span class="line">    11a7:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    11aa:	e8 71 00 00 00       	call   1220 &lt;_ZN6Holder29template_no_inline_class_funcIiEEvv&gt;</span><br><span class="line">    11af:	48 8d 45 f7          	lea    -0x9(%rbp),%rax</span><br><span class="line">    11b3:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    11b6:	e8 7f 00 00 00       	call   123a &lt;_ZN6Holder26template_inline_class_funcIiEEvv&gt;</span><br><span class="line">    11bb:	b8 00 00 00 00       	mov    $0x0,%eax</span><br><span class="line">    11c0:	48 8b 55 f8          	mov    -0x8(%rbp),%rdx</span><br><span class="line">    11c4:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx</span><br><span class="line">    11cb:	00 00 </span><br><span class="line">    11cd:	74 05                	je     11d4 &lt;main+0x75&gt;</span><br><span class="line">    11cf:	e8 7c fe ff ff       	call   1050 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">    11d4:	c9                   	leave  </span><br><span class="line">    11d5:	c3                   	ret    </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/12/20/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80%E5%90%8C%E5%90%8D%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F/" rel="prev" title="各种语言同名不同版本依赖库的处理方式">
+      <i class="fa fa-chevron-left"></i> 各种语言同名不同版本依赖库的处理方式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/01/30/cmake%E5%AE%8C%E6%95%B4%E9%93%BE%E6%8E%A5%E9%9D%99%E6%80%81%E5%BA%93/" rel="next" title="cmake完整链接静态库">
+      cmake完整链接静态库 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9"><span class="nav-number">2.</span> <span class="nav-text">编译选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">测试代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96"><span class="nav-number">3.1.</span> <span class="nav-text">反汇编</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#O3%E9%80%89%E9%A1%B9%E4%B8%8B-%E5%9F%BA%E6%9C%AC%E5%BC%80%E5%90%AF%E4%BA%86%E5%85%A8%E9%83%A8%E5%86%85%E8%81%94%E9%80%89%E9%A1%B9-%E5%92%8C%E4%BB%A3%E7%A0%81%E8%A3%81%E5%87%8F"><span class="nav-number">3.1.1.</span> <span class="nav-text">-O3选项下, 基本开启了全部内联选项, 和代码裁减</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#O0%E9%80%89%E9%A1%B9%E4%B8%8B"><span class="nav-number">3.1.2.</span> <span class="nav-text">-O0选项下</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">puzzzzzzle</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">puzzzzzzle</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
