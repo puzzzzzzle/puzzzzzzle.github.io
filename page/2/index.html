@@ -147,6 +147,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2022/11/02/%E4%BD%BF%E7%94%A8myrepos%E7%AE%A1%E7%90%86%E5%A4%9AGit%E4%BB%93%E5%BA%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="puzzzzzzle">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="puzzzzzzle's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/02/%E4%BD%BF%E7%94%A8myrepos%E7%AE%A1%E7%90%86%E5%A4%9AGit%E4%BB%93%E5%BA%93/" class="post-title-link" itemprop="url">使用myrepos管理多Git仓库</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-11-02 16:14:41" itemprop="dateCreated datePublished" datetime="2022-11-02T16:14:41+08:00">2022-11-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-19 15:26:50" itemprop="dateModified" datetime="2025-02-19T15:26:50+08:00">2025-02-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><ol>
+<li>myrepos可以快速操作一批仓库, 不限于git, 且非常方便扩展</li>
+<li>比起submodule来, 仓库间更加独立, 适合一些关系比较低的仓库</li>
+<li>可以在某个子仓库下使用, 只操作当前仓库</li>
+</ol>
+<h2 id="工具地址"><a href="#工具地址" class="headerlink" title="工具地址"></a>工具地址</h2><ol>
+<li><a target="_blank" rel="noopener" href="http://myrepos.branchable.com/">http://myrepos.branchable.com/</a></li>
+<li>git:&#x2F;&#x2F;myrepos.branchable.com&#x2F;</li>
+<li>*unix系列可以直接用包管理器安装, 搜索myrepos一般就可以了</li>
+<li>windows首先需要perl环境, 然后需要克隆库, 并把bin目录放在环境变量里面就行</li>
+</ol>
+<h2 id="eg"><a href="#eg" class="headerlink" title="eg:"></a>eg:</h2><ol>
+<li>mr co 克隆所有</li>
+<li>mr up 更新所有</li>
+<li>mr status</li>
+<li></li>
+</ol>
+<h2 id="批量注册"><a href="#批量注册" class="headerlink" title="批量注册"></a>批量注册</h2><ol>
+<li><code>ls |xargs -I &#123;&#125; sh -c  &#39;cd &#123;&#125; &amp;&amp; pwd &amp;&amp; mr reg &amp;&amp; cd -&#39;</code></li>
+</ol>
+<h2 id="我的扩展后的实例"><a href="#我的扩展后的实例" class="headerlink" title="我的扩展后的实例"></a>我的扩展后的实例</h2><ul>
+<li>.mrconfig</li>
+<li>扩展了一些submodule的操作</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">[DEFAULT]</span><br><span class="line"># gc</span><br><span class="line">git_gc = git gc &quot;$@&quot;</span><br><span class="line"># job num</span><br><span class="line">#jobs = 8</span><br><span class="line"># test cmd</span><br><span class="line">git_fileLs = ls</span><br><span class="line"></span><br><span class="line"># git submodule operators</span><br><span class="line">git_subInit = git submodule update --init --recursive</span><br><span class="line">git_subClean = git submodule foreach --recursive &quot;git reset --hard HEAD &amp;&amp; git clean -fd&quot;</span><br><span class="line">git_subBranch = git submodule foreach --recursive &quot;git checkout $@&quot;</span><br><span class="line">git_subUpdate = git submodule foreach --recursive &quot;git pull&quot;</span><br><span class="line">git_subRCmd = git submodule foreach --recursive &quot;$@&quot;</span><br><span class="line"></span><br><span class="line"># change git local config for user and email</span><br><span class="line"># eg: mr user puzzzzzzle 2359173906@qq.com</span><br><span class="line">git_user = echo &quot;$@&quot; </span><br><span class="line">	   git config user.name &quot;$1&quot;</span><br><span class="line">	   git config user.email &quot;$2&quot;</span><br><span class="line">	   echo name:</span><br><span class="line">	   git config user.name</span><br><span class="line">	   echo email:</span><br><span class="line">	   git config user.email</span><br><span class="line"># change git local config for user and email, include all submodule</span><br><span class="line"># eg: mr ruser puzzzzzzle 2359173906@qq.com</span><br><span class="line">git_ruser = echo &quot;$@&quot; </span><br><span class="line">	   git config user.name &quot;$1&quot;</span><br><span class="line">	   git config user.email &quot;$2&quot;</span><br><span class="line">	   echo name:</span><br><span class="line">	   git config user.name</span><br><span class="line">	   echo email:</span><br><span class="line">	   git config user.email</span><br><span class="line">	   git submodule foreach --recursive &quot;echo $@ &amp;&amp; git config user.name $1 &amp;&amp; git config user.email $2&quot;</span><br><span class="line"></span><br><span class="line">## your repos</span><br><span class="line"></span><br><span class="line">[cpp_study]</span><br><span class="line">checkout = git clone --recursive &#x27;git@github.com:puzzzzzzle/cpp_study.git&#x27; &#x27;cpp_study&#x27;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2022/09/09/shell%E8%84%9A%E6%9C%AC-%E5%8F%82%E6%95%B0%E4%BC%98%E5%85%88%E7%BA%A7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1084,82 +1181,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2021/05/08/cpython-PyObject-%E7%BB%A7%E6%89%BF%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="puzzzzzzle">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="puzzzzzzle's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/08/cpython-PyObject-%E7%BB%A7%E6%89%BF%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">cpython PyObject 继承机制的实现</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 16:44:02" itemprop="dateCreated datePublished" datetime="2021-05-08T16:44:02+08:00">2021-05-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-19 15:26:49" itemprop="dateModified" datetime="2025-02-19T15:26:49+08:00">2025-02-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/cpython/" itemprop="url" rel="index"><span itemprop="name">cpython</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">(lldb) call PyUnicode_FromWideChar(L&quot;算法符合&quot;, -1)</span><br><span class="line">(_object *) $16 = 0x000001fd3a9e0a50</span><br><span class="line">(lldb) p *$16</span><br><span class="line">(_object) $17 = &#123;</span><br><span class="line">  ob_refcnt = 1</span><br><span class="line">  ob_type = 0x00007fff35396140</span><br><span class="line">&#125;</span><br><span class="line">(lldb) p *(PyASCIIObject *)$16</span><br><span class="line">(PyASCIIObject) $18 = &#123;</span><br><span class="line">  ob_base = &#123;</span><br><span class="line">    ob_refcnt = 1</span><br><span class="line">    ob_type = 0x00007fff35396140</span><br><span class="line">  &#125;</span><br><span class="line">  length = 4</span><br><span class="line">  hash = -1</span><br><span class="line">  state = (interned = 0, kind = 2, compact = 1, ascii = 0, ready = 1)</span><br><span class="line">  wstr = 0x000001fd3a9e0a98 L&quot;算法符合&quot;</span><br><span class="line">&#125;</span><br><span class="line">(lldb) p *(PyCompactUnicodeObject *)$16</span><br><span class="line">(PyCompactUnicodeObject) $20 = &#123;</span><br><span class="line">  _base = &#123;</span><br><span class="line">    ob_base = &#123;</span><br><span class="line">      ob_refcnt = 1</span><br><span class="line">      ob_type = 0x00007fff35396140</span><br><span class="line">    &#125;</span><br><span class="line">    length = 4</span><br><span class="line">    hash = -1</span><br><span class="line">    state = (interned = 0, kind = 2, compact = 1, ascii = 0, ready = 1)</span><br><span class="line">    wstr = 0x000001fd3a9e0a98 L&quot;算法符合&quot;</span><br><span class="line">  &#125;</span><br><span class="line">  utf8_length = 0</span><br><span class="line">  utf8 = 0x0000000000000000</span><br><span class="line">  wstr_length = 4</span><br><span class="line">&#125;</span><br><span class="line">(lldb) p *(PyUnicodeObject *)$16</span><br><span class="line">(PyUnicodeObject) $19 = &#123;</span><br><span class="line">  _base = &#123;</span><br><span class="line">    _base = &#123;</span><br><span class="line">      ob_base = &#123;</span><br><span class="line">        ob_refcnt = 1</span><br><span class="line">        ob_type = 0x00007fff35396140</span><br><span class="line">      &#125;</span><br><span class="line">      length = 4</span><br><span class="line">      hash = -1</span><br><span class="line">      state = (interned = 0, kind = 2, compact = 1, ascii = 0, ready = 1)</span><br><span class="line">      wstr = 0x000001fd3a9e0a98 L&quot;算法符合&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    utf8_length = 0</span><br><span class="line">    utf8 = 0x0000000000000000</span><br><span class="line">    wstr_length = 4</span><br><span class="line">  &#125;</span><br><span class="line">  data = (interned = 3, kind = 5, compact = 0, ascii = 0, ready = 1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">PyObject * PyUnicode_FromWideChar(const wchar_t *u, Py_ssize_t size)</span><br><span class="line">PyObject * PyUnicode_New(Py_ssize_t size, Py_UCS4 maxchar)</span><br><span class="line">_PyUnicode_CONVERT_BYTES</span><br><span class="line"></span><br><span class="line">    struct_size = sizeof(PyCompactUnicodeObject);</span><br><span class="line">    if (maxchar &lt; 128) &#123;</span><br><span class="line">        kind = PyUnicode_1BYTE_KIND;</span><br><span class="line">        char_size = 1;</span><br><span class="line">        is_ascii = 1;</span><br><span class="line">        struct_size = sizeof(PyASCIIObject);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">        obj = (PyObject *) PyObject_Malloc(struct_size + (size + 1) * char_size);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">(lldb) p *(PyASCIIObject *)unicode</span><br><span class="line">(PyASCIIObject) $18 = &#123;</span><br><span class="line">  ob_base = &#123;</span><br><span class="line">    ob_refcnt = 1</span><br><span class="line">    ob_type = 0x00007fff35396140</span><br><span class="line">  &#125;</span><br><span class="line">  length = 67</span><br><span class="line">  hash = -1</span><br><span class="line">  state = (interned = 0, kind = 1, compact = 1, ascii = 1, ready = 1)</span><br><span class="line">  wstr = 0x0000000000000000</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">					do &#123;</span><br><span class="line">  unsigned char *_to = (unsigned char *)(((</span><br><span class="line">      Py_UCS1</span><br><span class="line">          *)((void)((!!(PyType_HasFeature((((PyObject *)(unicode))-&gt;ob_type),</span><br><span class="line">                                          (1UL &lt;&lt; 28)))) ||</span><br><span class="line">                    (_wassert(L&quot;PyUnicode_Check(unicode)&quot;, L&quot;_file_name_&quot;,</span><br><span class="line">                              (unsigned)(2255)),</span><br><span class="line">                     0)),</span><br><span class="line">             (((PyASCIIObject *)(unicode))-&gt;state.compact)</span><br><span class="line">                 ? (((void)((!!(PyType_HasFeature(</span><br><span class="line">                                (((PyObject *)(unicode))-&gt;ob_type),</span><br><span class="line">                                (1UL &lt;&lt; 28)))) ||</span><br><span class="line">                            (_wassert(L&quot;PyUnicode_Check(unicode)&quot;,</span><br><span class="line">                                      L&quot;_file_name_&quot;, (unsigned)(2255)),</span><br><span class="line">                             0)),</span><br><span class="line">                     (void)((!!((((PyASCIIObject *)unicode)-&gt;state.ready))) ||</span><br><span class="line">                            (_wassert(L&quot;PyUnicode_IS_READY(unicode)&quot;,</span><br><span class="line">                                      L&quot;_file_name_&quot;, (unsigned)(2255)),</span><br><span class="line">                             0)),</span><br><span class="line">                     ((PyASCIIObject *)unicode)-&gt;state.ascii)</span><br><span class="line">                        ? ((void *)((PyASCIIObject *)(unicode) + 1))</span><br><span class="line">                        : ((void *)((PyCompactUnicodeObject *)(unicode) + 1)))</span><br><span class="line">                 : ((void)((!!(((PyUnicodeObject *)(unicode))-&gt;data.any)) ||</span><br><span class="line">                           (_wassert(L&quot;((PyUnicodeObject*)(unicode))-&gt;data.any&quot;,</span><br><span class="line">                                     L&quot;_file_name_&quot;, (unsigned)(2255)),</span><br><span class="line">                            0)),</span><br><span class="line">                    ((((PyUnicodeObject *)(unicode))-&gt;data.any))))));</span><br><span class="line">  const Py_UNICODE *_iter = (const Py_UNICODE *)(u);</span><br><span class="line">  const Py_UNICODE *_end = (const Py_UNICODE *)(u + size);</span><br><span class="line">  Py_ssize_t n = (_end) - (_iter);</span><br><span class="line">  const Py_UNICODE *_unrolled_end = _iter + ((size_t)(n) &amp; ~(size_t)((4) - 1));</span><br><span class="line">  while (_iter &lt; (_unrolled_end)) &#123;</span><br><span class="line">    _to[0] = (unsigned char)_iter[0];</span><br><span class="line">    _to[1] = (unsigned char)_iter[1];</span><br><span class="line">    _to[2] = (unsigned char)_iter[2];</span><br><span class="line">    _to[3] = (unsigned char)_iter[3];</span><br><span class="line">    _iter += 4;</span><br><span class="line">    _to += 4;</span><br><span class="line">  &#125;</span><br><span class="line">  while (_iter &lt; (_end))</span><br><span class="line">    *_to++ = (unsigned char)*_iter++;</span><br><span class="line">&#125; while (0)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(lldb) p ((void *)((PyASCIIObject *)(unicode) + 1))</span><br><span class="line">(void *) $19 = 0x0000021aa88448e0</span><br><span class="line">(lldb) p ((const char *)((PyASCIIObject *)(unicode) + 1))</span><br><span class="line">(const char *) $20 = 0x0000021aa88448e0 &quot;G:\projects\open_source_projects\cpython\PCbuild\amd64\python_d.exe&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1229,7 +1250,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">38</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

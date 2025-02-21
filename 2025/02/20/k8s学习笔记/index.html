@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"puzzzzzzle.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="资料 https:&#x2F;&#x2F;kubernetes.io&#x2F;zh-cn&#x2F;docs&#x2F;concepts&#x2F; https:&#x2F;&#x2F;github.com&#x2F;guangzhengli&#x2F;k8s-tutorials  基本概念minikube 一种本地部署k8s集群的方案, 底层使用docker&#x2F;qemu&#x2F;VirtualBox等驱动 使用docker时, 使用了Docker in Docker 的方案, 在d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8s学习笔记">
+<meta property="og:url" content="https://puzzzzzzle.github.io/2025/02/20/k8s%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="puzzzzzzle&#39;s blog">
+<meta property="og:description" content="资料 https:&#x2F;&#x2F;kubernetes.io&#x2F;zh-cn&#x2F;docs&#x2F;concepts&#x2F; https:&#x2F;&#x2F;github.com&#x2F;guangzhengli&#x2F;k8s-tutorials  基本概念minikube 一种本地部署k8s集群的方案, 底层使用docker&#x2F;qemu&#x2F;VirtualBox等驱动 使用docker时, 使用了Docker in Docker 的方案, 在d">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-20T02:15:38.000Z">
+<meta property="article:modified_time" content="2025-02-21T01:42:42.754Z">
+<meta property="article:author" content="puzzzzzzle">
+<meta property="article:tag" content="program">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://puzzzzzzle.github.io/2025/02/20/k8s%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>k8s学习笔记 | puzzzzzzle's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">puzzzzzzle's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">BLOG</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2025/02/20/k8s%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="puzzzzzzle">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="puzzzzzzle's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          k8s学习笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-02-20 10:15:38" itemprop="dateCreated datePublished" datetime="2025-02-20T10:15:38+08:00">2025-02-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-21 09:42:42" itemprop="dateModified" datetime="2025-02-21T09:42:42+08:00">2025-02-21</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/concepts/">https://kubernetes.io/zh-cn/docs/concepts/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/guangzhengli/k8s-tutorials">https://github.com/guangzhengli/k8s-tutorials</a></li>
+</ul>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="minikube"><a href="#minikube" class="headerlink" title="minikube"></a>minikube</h3><ul>
+<li>一种本地部署k8s集群的方案, 底层使用docker&#x2F;qemu&#x2F;VirtualBox等驱动</li>
+<li>使用docker时, 使用了Docker in Docker 的方案, 在docker内部再拉起一个dockerd</li>
+</ul>
+<h3 id="k8s概念"><a href="#k8s概念" class="headerlink" title="k8s概念"></a>k8s概念</h3><ul>
+<li>kubectl: 一个工具, 把各种命令转换为http 请求, 转发给kube-apiserver, 并将结果反向转换</li>
+<li>控制平面(Control plane) : k8s集群的管理和调度</li>
+<li>节点(Node): 具体运行某个进程的机器&#x2F;虚拟机, 部署了k8s控制需要的进程</li>
+<li>Pod: k8s调度的最小单位, 由一个或者多个容器构成, 单个pod在单个node上运行, 可以通过localhost互相访问</li>
+<li>ReplicaSet: 确保指定数量的 Pod 副本（Replicas）始终在集群中运行, 挂掉的自动拉起, 多出的自动删除, 一般由Deployment管理</li>
+<li>Deployment: 提供声明式的 Pod 部署管理，支持滚动更新、版本回滚、暂停&#x2F;恢复更新等高级功能, Deployment 是比 ReplicaSet 更高层的抽象，封装了 ReplicaSet 的创建和更新逻辑<ul>
+<li>Deployment 通过创建和管理多个 ReplicaSet 来实现版本控制。每次更新会生成一个新 ReplicaSet，旧 ReplicaSet 默认保留以供回滚</li>
+</ul>
+</li>
+<li>Service: 为 pod 提供一个稳定的 Endpoint, Service 位于 pod 的前面，负责接收请求并将它们传递给它后面的所有pod</li>
+</ul>
+<h3 id="k8s控制平面-Control-plane-components"><a href="#k8s控制平面-Control-plane-components" class="headerlink" title="k8s控制平面(Control plane components )"></a>k8s控制平面(Control plane components )</h3><ul>
+<li>k8s集群的管理和调度</li>
+</ul>
+<h4 id="kube-apiserver"><a href="#kube-apiserver" class="headerlink" title="kube-apiserver"></a>kube-apiserver</h4><ul>
+<li>控制面的管理入口, 接受http请求</li>
+</ul>
+<h4 id="etcd"><a href="#etcd" class="headerlink" title="etcd"></a>etcd</h4><ul>
+<li>k8s自身的数据存储</li>
+</ul>
+<h4 id="kube-scheduler"><a href="#kube-scheduler" class="headerlink" title="kube-scheduler"></a>kube-scheduler</h4><ul>
+<li>k8s的决策调度核心, 负责决策哪些pod要到那些node上运行等逻辑</li>
+</ul>
+<h4 id="kube-controller-manager"><a href="#kube-controller-manager" class="headerlink" title="kube-controller-manager"></a>kube-controller-manager</h4><ul>
+<li>负责运行控制器进程, 各种控制器都在这里, 常见的有:<ul>
+<li>Node Controller : 负责监控node截图, 故障时通知</li>
+<li>ReplicaSet Coltroller: 负责确保 Deployment 或 ReplicaSet 指定的 Pod 副本数始终符合预期，自动创建或删除 Pod</li>
+<li>Deployment Coltroller: 管理 Deployment 的生命周期（如滚动更新、回滚），通过控制 ReplicaSet 实现应用的无缝升级</li>
+<li>Service Account Controller: 为每个命名空间创建默认服务账户，并确保其 Token 和配置存在。</li>
+<li>Endpoint Controller: 维护 Service 与 Pod 的关联关系，动态更新 Endpoints 对象以反映当前匹配的 Pod IP 和端口。</li>
+<li>Job&#x2F;CronJob: 执行一次性任务（Job）或定时任务（CronJob），确保任务按预期完成或周期性运</li>
+<li>PersistentVolume Controller: 绑定 PersistentVolume（PV）与 PersistentVolumeClaim（PVC），处理存储卷的生命周期（如创建&#x2F;删除云存储）</li>
+<li>DaemonSet Controller: 确保每个符合条件的节点运行一个指定的 Pod（如日志收集组件）。</li>
+<li>StatefulSet Controller: 管理有状态应用的部署，保障 Pod 的唯一性、有序性和稳定的网络标识及存储</li>
+</ul>
+</li>
+</ul>
+<h4 id="cloud-controller-manager"><a href="#cloud-controller-manager" class="headerlink" title="cloud-controller-manager"></a>cloud-controller-manager</h4><ul>
+<li>云平台定制的一些控制器</li>
+</ul>
+<h3 id="节点和节点组件-Node-components"><a href="#节点和节点组件-Node-components" class="headerlink" title="节点和节点组件(Node components)"></a>节点和节点组件(Node components)</h3><ul>
+<li>node 是具体负责运行进程的某个机器&#x2F;虚拟机</li>
+</ul>
+<h4 id="kubelet"><a href="#kubelet" class="headerlink" title="kubelet"></a>kubelet</h4><ul>
+<li>接收一组通过各类机制提供给它的 PodSpec，确保这些 PodSpec 中描述的容器处于运行状态且健康</li>
+</ul>
+<h4 id="kube-proxy"><a href="#kube-proxy" class="headerlink" title="kube-proxy"></a>kube-proxy</h4><ul>
+<li>集群中每个节点（node）上所运行的网络代理, 实现service网络通信</li>
+</ul>
+<h4 id="Container-runtime"><a href="#Container-runtime" class="headerlink" title="Container runtime"></a>Container runtime</h4><ul>
+<li>容器运行时, 符合CRI的容器实现</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/02/19/%E8%BF%9C%E7%A8%8B%E6%90%AD%E5%BB%BAminikube%E7%8E%AF%E5%A2%83%E6%8A%98%E8%85%BE%E8%AE%B0%E5%BD%95/" rel="prev" title="远程搭建minikube环境折腾记录">
+      <i class="fa fa-chevron-left"></i> 远程搭建minikube环境折腾记录
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%96%99"><span class="nav-number">1.</span> <span class="nav-text">资料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#minikube"><span class="nav-number">2.1.</span> <span class="nav-text">minikube</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#k8s%E6%A6%82%E5%BF%B5"><span class="nav-number">2.2.</span> <span class="nav-text">k8s概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#k8s%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2-Control-plane-components"><span class="nav-number">2.3.</span> <span class="nav-text">k8s控制平面(Control plane components )</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#kube-apiserver"><span class="nav-number">2.3.1.</span> <span class="nav-text">kube-apiserver</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#etcd"><span class="nav-number">2.3.2.</span> <span class="nav-text">etcd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kube-scheduler"><span class="nav-number">2.3.3.</span> <span class="nav-text">kube-scheduler</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kube-controller-manager"><span class="nav-number">2.3.4.</span> <span class="nav-text">kube-controller-manager</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cloud-controller-manager"><span class="nav-number">2.3.5.</span> <span class="nav-text">cloud-controller-manager</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E5%92%8C%E8%8A%82%E7%82%B9%E7%BB%84%E4%BB%B6-Node-components"><span class="nav-number">2.4.</span> <span class="nav-text">节点和节点组件(Node components)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#kubelet"><span class="nav-number">2.4.1.</span> <span class="nav-text">kubelet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kube-proxy"><span class="nav-number">2.4.2.</span> <span class="nav-text">kube-proxy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Container-runtime"><span class="nav-number">2.4.3.</span> <span class="nav-text">Container runtime</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">puzzzzzzle</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">puzzzzzzle</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

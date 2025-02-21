@@ -147,6 +147,131 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2025/02/20/k8s%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="puzzzzzzle">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="puzzzzzzle's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/02/20/k8s%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">k8s学习笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-02-20 10:15:38" itemprop="dateCreated datePublished" datetime="2025-02-20T10:15:38+08:00">2025-02-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-21 09:42:42" itemprop="dateModified" datetime="2025-02-21T09:42:42+08:00">2025-02-21</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/concepts/">https://kubernetes.io/zh-cn/docs/concepts/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/guangzhengli/k8s-tutorials">https://github.com/guangzhengli/k8s-tutorials</a></li>
+</ul>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="minikube"><a href="#minikube" class="headerlink" title="minikube"></a>minikube</h3><ul>
+<li>一种本地部署k8s集群的方案, 底层使用docker&#x2F;qemu&#x2F;VirtualBox等驱动</li>
+<li>使用docker时, 使用了Docker in Docker 的方案, 在docker内部再拉起一个dockerd</li>
+</ul>
+<h3 id="k8s概念"><a href="#k8s概念" class="headerlink" title="k8s概念"></a>k8s概念</h3><ul>
+<li>kubectl: 一个工具, 把各种命令转换为http 请求, 转发给kube-apiserver, 并将结果反向转换</li>
+<li>控制平面(Control plane) : k8s集群的管理和调度</li>
+<li>节点(Node): 具体运行某个进程的机器&#x2F;虚拟机, 部署了k8s控制需要的进程</li>
+<li>Pod: k8s调度的最小单位, 由一个或者多个容器构成, 单个pod在单个node上运行, 可以通过localhost互相访问</li>
+<li>ReplicaSet: 确保指定数量的 Pod 副本（Replicas）始终在集群中运行, 挂掉的自动拉起, 多出的自动删除, 一般由Deployment管理</li>
+<li>Deployment: 提供声明式的 Pod 部署管理，支持滚动更新、版本回滚、暂停&#x2F;恢复更新等高级功能, Deployment 是比 ReplicaSet 更高层的抽象，封装了 ReplicaSet 的创建和更新逻辑<ul>
+<li>Deployment 通过创建和管理多个 ReplicaSet 来实现版本控制。每次更新会生成一个新 ReplicaSet，旧 ReplicaSet 默认保留以供回滚</li>
+</ul>
+</li>
+<li>Service: 为 pod 提供一个稳定的 Endpoint, Service 位于 pod 的前面，负责接收请求并将它们传递给它后面的所有pod</li>
+</ul>
+<h3 id="k8s控制平面-Control-plane-components"><a href="#k8s控制平面-Control-plane-components" class="headerlink" title="k8s控制平面(Control plane components )"></a>k8s控制平面(Control plane components )</h3><ul>
+<li>k8s集群的管理和调度</li>
+</ul>
+<h4 id="kube-apiserver"><a href="#kube-apiserver" class="headerlink" title="kube-apiserver"></a>kube-apiserver</h4><ul>
+<li>控制面的管理入口, 接受http请求</li>
+</ul>
+<h4 id="etcd"><a href="#etcd" class="headerlink" title="etcd"></a>etcd</h4><ul>
+<li>k8s自身的数据存储</li>
+</ul>
+<h4 id="kube-scheduler"><a href="#kube-scheduler" class="headerlink" title="kube-scheduler"></a>kube-scheduler</h4><ul>
+<li>k8s的决策调度核心, 负责决策哪些pod要到那些node上运行等逻辑</li>
+</ul>
+<h4 id="kube-controller-manager"><a href="#kube-controller-manager" class="headerlink" title="kube-controller-manager"></a>kube-controller-manager</h4><ul>
+<li>负责运行控制器进程, 各种控制器都在这里, 常见的有:<ul>
+<li>Node Controller : 负责监控node截图, 故障时通知</li>
+<li>ReplicaSet Coltroller: 负责确保 Deployment 或 ReplicaSet 指定的 Pod 副本数始终符合预期，自动创建或删除 Pod</li>
+<li>Deployment Coltroller: 管理 Deployment 的生命周期（如滚动更新、回滚），通过控制 ReplicaSet 实现应用的无缝升级</li>
+<li>Service Account Controller: 为每个命名空间创建默认服务账户，并确保其 Token 和配置存在。</li>
+<li>Endpoint Controller: 维护 Service 与 Pod 的关联关系，动态更新 Endpoints 对象以反映当前匹配的 Pod IP 和端口。</li>
+<li>Job&#x2F;CronJob: 执行一次性任务（Job）或定时任务（CronJob），确保任务按预期完成或周期性运</li>
+<li>PersistentVolume Controller: 绑定 PersistentVolume（PV）与 PersistentVolumeClaim（PVC），处理存储卷的生命周期（如创建&#x2F;删除云存储）</li>
+<li>DaemonSet Controller: 确保每个符合条件的节点运行一个指定的 Pod（如日志收集组件）。</li>
+<li>StatefulSet Controller: 管理有状态应用的部署，保障 Pod 的唯一性、有序性和稳定的网络标识及存储</li>
+</ul>
+</li>
+</ul>
+<h4 id="cloud-controller-manager"><a href="#cloud-controller-manager" class="headerlink" title="cloud-controller-manager"></a>cloud-controller-manager</h4><ul>
+<li>云平台定制的一些控制器</li>
+</ul>
+<h3 id="节点和节点组件-Node-components"><a href="#节点和节点组件-Node-components" class="headerlink" title="节点和节点组件(Node components)"></a>节点和节点组件(Node components)</h3><ul>
+<li>node 是具体负责运行进程的某个机器&#x2F;虚拟机</li>
+</ul>
+<h4 id="kubelet"><a href="#kubelet" class="headerlink" title="kubelet"></a>kubelet</h4><ul>
+<li>接收一组通过各类机制提供给它的 PodSpec，确保这些 PodSpec 中描述的容器处于运行状态且健康</li>
+</ul>
+<h4 id="kube-proxy"><a href="#kube-proxy" class="headerlink" title="kube-proxy"></a>kube-proxy</h4><ul>
+<li>集群中每个节点（node）上所运行的网络代理, 实现service网络通信</li>
+</ul>
+<h4 id="Container-runtime"><a href="#Container-runtime" class="headerlink" title="Container runtime"></a>Container runtime</h4><ul>
+<li>容器运行时, 符合CRI的容器实现</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2025/02/19/%E8%BF%9C%E7%A8%8B%E6%90%AD%E5%BB%BAminikube%E7%8E%AF%E5%A2%83%E6%8A%98%E8%85%BE%E8%AE%B0%E5%BD%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1001,103 +1126,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2022/11/02/%E4%BD%BF%E7%94%A8myrepos%E7%AE%A1%E7%90%86%E5%A4%9AGit%E4%BB%93%E5%BA%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="puzzzzzzle">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="puzzzzzzle's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/11/02/%E4%BD%BF%E7%94%A8myrepos%E7%AE%A1%E7%90%86%E5%A4%9AGit%E4%BB%93%E5%BA%93/" class="post-title-link" itemprop="url">使用myrepos管理多Git仓库</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-11-02 16:14:41" itemprop="dateCreated datePublished" datetime="2022-11-02T16:14:41+08:00">2022-11-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-19 15:26:50" itemprop="dateModified" datetime="2025-02-19T15:26:50+08:00">2025-02-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><ol>
-<li>myrepos可以快速操作一批仓库, 不限于git, 且非常方便扩展</li>
-<li>比起submodule来, 仓库间更加独立, 适合一些关系比较低的仓库</li>
-<li>可以在某个子仓库下使用, 只操作当前仓库</li>
-</ol>
-<h2 id="工具地址"><a href="#工具地址" class="headerlink" title="工具地址"></a>工具地址</h2><ol>
-<li><a target="_blank" rel="noopener" href="http://myrepos.branchable.com/">http://myrepos.branchable.com/</a></li>
-<li>git:&#x2F;&#x2F;myrepos.branchable.com&#x2F;</li>
-<li>*unix系列可以直接用包管理器安装, 搜索myrepos一般就可以了</li>
-<li>windows首先需要perl环境, 然后需要克隆库, 并把bin目录放在环境变量里面就行</li>
-</ol>
-<h2 id="eg"><a href="#eg" class="headerlink" title="eg:"></a>eg:</h2><ol>
-<li>mr co 克隆所有</li>
-<li>mr up 更新所有</li>
-<li>mr status</li>
-<li></li>
-</ol>
-<h2 id="批量注册"><a href="#批量注册" class="headerlink" title="批量注册"></a>批量注册</h2><ol>
-<li><code>ls |xargs -I &#123;&#125; sh -c  &#39;cd &#123;&#125; &amp;&amp; pwd &amp;&amp; mr reg &amp;&amp; cd -&#39;</code></li>
-</ol>
-<h2 id="我的扩展后的实例"><a href="#我的扩展后的实例" class="headerlink" title="我的扩展后的实例"></a>我的扩展后的实例</h2><ul>
-<li>.mrconfig</li>
-<li>扩展了一些submodule的操作</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">[DEFAULT]</span><br><span class="line"># gc</span><br><span class="line">git_gc = git gc &quot;$@&quot;</span><br><span class="line"># job num</span><br><span class="line">#jobs = 8</span><br><span class="line"># test cmd</span><br><span class="line">git_fileLs = ls</span><br><span class="line"></span><br><span class="line"># git submodule operators</span><br><span class="line">git_subInit = git submodule update --init --recursive</span><br><span class="line">git_subClean = git submodule foreach --recursive &quot;git reset --hard HEAD &amp;&amp; git clean -fd&quot;</span><br><span class="line">git_subBranch = git submodule foreach --recursive &quot;git checkout $@&quot;</span><br><span class="line">git_subUpdate = git submodule foreach --recursive &quot;git pull&quot;</span><br><span class="line">git_subRCmd = git submodule foreach --recursive &quot;$@&quot;</span><br><span class="line"></span><br><span class="line"># change git local config for user and email</span><br><span class="line"># eg: mr user puzzzzzzle 2359173906@qq.com</span><br><span class="line">git_user = echo &quot;$@&quot; </span><br><span class="line">	   git config user.name &quot;$1&quot;</span><br><span class="line">	   git config user.email &quot;$2&quot;</span><br><span class="line">	   echo name:</span><br><span class="line">	   git config user.name</span><br><span class="line">	   echo email:</span><br><span class="line">	   git config user.email</span><br><span class="line"># change git local config for user and email, include all submodule</span><br><span class="line"># eg: mr ruser puzzzzzzle 2359173906@qq.com</span><br><span class="line">git_ruser = echo &quot;$@&quot; </span><br><span class="line">	   git config user.name &quot;$1&quot;</span><br><span class="line">	   git config user.email &quot;$2&quot;</span><br><span class="line">	   echo name:</span><br><span class="line">	   git config user.name</span><br><span class="line">	   echo email:</span><br><span class="line">	   git config user.email</span><br><span class="line">	   git submodule foreach --recursive &quot;echo $@ &amp;&amp; git config user.name $1 &amp;&amp; git config user.email $2&quot;</span><br><span class="line"></span><br><span class="line">## your repos</span><br><span class="line"></span><br><span class="line">[cpp_study]</span><br><span class="line">checkout = git clone --recursive &#x27;git@github.com:puzzzzzzle/cpp_study.git&#x27; &#x27;cpp_study&#x27;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1167,7 +1195,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">38</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
