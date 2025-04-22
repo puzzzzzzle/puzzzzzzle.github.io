@@ -147,6 +147,128 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2025/04/22/Python%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BA%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="puzzzzzzle">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="puzzzzzzle's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/22/Python%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BA%93/" class="post-title-link" itemprop="url">Python常用工具库</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-04-22 16:18:33 / 修改时间：16:53:19" itemprop="dateCreated datePublished" datetime="2025-04-22T16:18:33+08:00">2025-04-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Python常用工具库"><a href="#Python常用工具库" class="headerlink" title="Python常用工具库"></a>Python常用工具库</h2><ul>
+<li>参考 <a target="_blank" rel="noopener" href="https://github.com/vinta/awesome-python">https://github.com/vinta/awesome-python</a> , 挑选了一些常用的</li>
+</ul>
+<h3 id="包管理-环境"><a href="#包管理-环境" class="headerlink" title="包管理&#x2F;环境"></a>包管理&#x2F;环境</h3><ul>
+<li>uv: rust写的, 非常好用, 基本都迁移到这个了</li>
+<li>pyinstaller: 打包可执行文件</li>
+<li>jupyter notebook: 非常好用的交互式python环境</li>
+</ul>
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><ul>
+<li>mypy: 类型检查</li>
+<li>FastAPI&#x2F;Typer: 类似Fastapi一样快速构建Cli命令</li>
+<li>rich: 支持表格&#x2F;进度条&#x2F;语法高亮等富文本输出</li>
+<li>tqdm: 非常方便的进度条, 也可以在命令行中使用</li>
+<li>pydantic: FastApi底层的类型解析, 非常方便 dict, json等格式化, 再也不用手撸__dict__</li>
+<li>difflib: 文本差异比较</li>
+<li>PyYAML: yaml解析器</li>
+<li>sh: 命令行调用</li>
+</ul>
+<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><ul>
+<li>FastAPI: 替代 Flask, 原生支持异步</li>
+<li>aiohttp: 基于 asyncio 的异步 HTTP 网络库</li>
+<li>requests: 人性化的 HTTP 请求库</li>
+<li>grequests: requests 库 + gevent 用于异步 HTTP 请求</li>
+<li>httpie: curl 的替代</li>
+<li>Jinja2: 一个现代的, 对设计师友好的模板引擎</li>
+<li>celery: 一个异步任务队列&#x2F;作业队列, 基于分布式消息传递</li>
+</ul>
+<h3 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h3><ul>
+<li>pyqt</li>
+<li>tkinter</li>
+</ul>
+<h3 id="机器学习-数据处理"><a href="#机器学习-数据处理" class="headerlink" title="机器学习&#x2F;数据处理"></a>机器学习&#x2F;数据处理</h3><ul>
+<li>pillow: 图形处理, Pillow 是一个更加易用版的 PIL</li>
+</ul>
+<h4 id="数据可视化"><a href="#数据可视化" class="headerlink" title="数据可视化"></a>数据可视化</h4><ul>
+<li>matplotlib: 基础绘图库，支持各种静态&#x2F;交互式图表（折线图&#x2F;散点图&#x2F;柱状图等）</li>
+<li>seaborn: 基于matplotlib的高级统计可视化，内置美观主题和复杂图表类型</li>
+</ul>
+<h4 id="数据处理与计算"><a href="#数据处理与计算" class="headerlink" title="数据处理与计算"></a>数据处理与计算</h4><ul>
+<li>numpy:  数值计算基础库，提供高效多维数组(ndarray)和数学函数</li>
+<li>pandas:  数据结构化处理工具，DataFrame为核心，支持数据清洗&#x2F;分析&#x2F;IO操作</li>
+<li>scipy:  科学计算工具包，包含优化&#x2F;积分&#x2F;插值&#x2F;统计等高级数学模块</li>
+</ul>
+<h4 id="机器学习框架"><a href="#机器学习框架" class="headerlink" title="机器学习框架"></a>机器学习框架</h4><ul>
+<li>scikit-learn:  传统机器学习库，包含分类&#x2F;回归&#x2F;聚类等算法及评估工具</li>
+</ul>
+<h4 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h4><ul>
+<li>jupyter:  交互式笔记本环境，支持代码&#x2F;文档&#x2F;可视化混合编排</li>
+</ul>
+<h4 id="PyTorch生态"><a href="#PyTorch生态" class="headerlink" title="PyTorch生态"></a>PyTorch生态</h4><ul>
+<li>torch:  PyTorch深度学习框架，支持动态计算图和GPU加速</li>
+<li>torchvision:  计算机视觉工具库，包含数据集&#x2F;模型架构&#x2F;图像变换方法</li>
+<li>torchaudio:  音频处理工具库，支持语音数据集和特征提取</li>
+<li>pytorch-lightning:  PyTorch轻量级封装，简化训练流程和分布式训练</li>
+</ul>
+<h4 id="强化学习专用库"><a href="#强化学习专用库" class="headerlink" title="强化学习专用库"></a>强化学习专用库</h4><ul>
+<li>stable-baselines3:  最主流的RL实现库（PPO&#x2F;DQN&#x2F;SAC等算法）</li>
+</ul>
+<h4 id="其他重要库"><a href="#其他重要库" class="headerlink" title="其他重要库"></a>其他重要库</h4><ul>
+<li>sb3-contrib:  Stable-Baselines3扩展包（额外算法实现）</li>
+<li>mujoco:  物理仿真引擎（复杂机器人控制环境）</li>
+<li>openai: 调用llm模型的通用接口</li>
+<li>gymnasium[all]: 一些游戏的env实现, 方便强化学习使用, 依赖swig&amp;c++编译环境, 手动安装 : pacman -Sy swig</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2025/02/20/k8s%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -295,10 +417,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-02-19 11:40:35 / 修改时间：15:26:50" itemprop="dateCreated datePublished" datetime="2025-02-19T11:40:35+08:00">2025-02-19</time>
+              <time title="创建时间：2025-02-19 11:40:35" itemprop="dateCreated datePublished" datetime="2025-02-19T11:40:35+08:00">2025-02-19</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-22 16:53:19" itemprop="dateModified" datetime="2025-04-22T16:53:19+08:00">2025-04-22</time>
+              </span>
 
           
 
@@ -692,7 +820,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-19 15:26:49" itemprop="dateModified" datetime="2025-02-19T15:26:49+08:00">2025-02-19</time>
+                <time title="修改时间：2025-04-22 16:53:19" itemprop="dateModified" datetime="2025-04-22T16:53:19+08:00">2025-04-22</time>
               </span>
 
           
@@ -992,140 +1120,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2022/12/20/c-%E7%B1%BB%E9%93%BE%E6%8E%A5%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%90%8C%E5%90%8D%E7%B1%BB%E9%93%BE%E6%8E%A5%E6%96%B9%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="puzzzzzzle">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="puzzzzzzle's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/12/20/c-%E7%B1%BB%E9%93%BE%E6%8E%A5%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%90%8C%E5%90%8D%E7%B1%BB%E9%93%BE%E6%8E%A5%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">c++类链接机制与同名类链接方式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-12-20 16:33:41" itemprop="dateCreated datePublished" datetime="2022-12-20T16:33:41+08:00">2022-12-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-19 15:26:49" itemprop="dateModified" datetime="2025-02-19T15:26:49+08:00">2025-02-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="先看下示例代码"><a href="#先看下示例代码" class="headerlink" title="先看下示例代码"></a>先看下示例代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// class2_define.h</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Class2</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">()</span> </span>&#123; <span class="built_in">printf</span>(<span class="string">&quot;Class2\n&quot;</span>); &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// test.cpp</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;class2_define.h&quot;</span></span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Class1</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">()</span> </span>&#123; <span class="built_in">printf</span>(<span class="string">&quot;test::Class2\n&quot;</span>); &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;test start \n&quot;</span>);</span><br><span class="line">  Class1 c1&#123;&#125;;</span><br><span class="line">  c<span class="number">1.f</span>un();</span><br><span class="line">  Class2 c2&#123;&#125;;</span><br><span class="line">  c<span class="number">2.f</span>un();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.cpp</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;class2_define.h&quot;</span></span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Class1</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">()</span> </span>&#123; <span class="built_in">printf</span>(<span class="string">&quot;main::Class1\n&quot;</span>); &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 输出:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment">main start</span></span><br><span class="line"><span class="comment">main::Class1</span></span><br><span class="line"><span class="comment">Class2</span></span><br><span class="line"><span class="comment">test start</span></span><br><span class="line"><span class="comment">main::Class1</span></span><br><span class="line"><span class="comment">Class2</span></span><br><span class="line"><span class="comment"> * @return</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;main start \n&quot;</span>);</span><br><span class="line">  Class1 c1&#123;&#125;;</span><br><span class="line">  c<span class="number">1.f</span>un();</span><br><span class="line">  Class2 c2&#123;&#125;;</span><br><span class="line">  c<span class="number">2.f</span>un();</span><br><span class="line">  <span class="built_in">test</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ul>
-<li>Class2 很正常, 类的实现inline到.h中了, 所以输出是一致的</li>
-<li>Class1 重复定义了, 且func函数输出不一致, 但是能通过编译, 输出的都是main中的定义</li>
-</ul>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><ul>
-<li>c++在编译时 每个编译单元(.o&#x2F;.obj)都是独立编译的<ul>
-<li>所有的.h会直接展开, 生成.i后, 再一起编译.s最终生成.o</li>
-</ul>
-</li>
-<li>所以<strong>Class2在test.cpp.o和main.cpp.o中,都有一份汇编代码</strong><ul>
-<li>这么来说对翻译.s&#x2F;.o的汇编器来说 Class1 和 Class2其实是一样的, 它都不知道其他.o中是否有重复定义</li>
-</ul>
-</li>
-<li>但是这么做, 会导致二进制大小翻倍, 所以在ld过程中, ld对同一个符号, 只会保留一个定义<ul>
-<li>这里main.cpp.o先链接, 采用首先找到就退出的方式, 所以全部链接main中的, test中的被丢弃了</li>
-</ul>
-</li>
-</ul>
-<h3 id="编译-静态-动态-链接-相同符号的区别"><a href="#编译-静态-动态-链接-相同符号的区别" class="headerlink" title="编译&#x2F;静态&#x2F;动态 链接 相同符号的区别"></a>编译&#x2F;静态&#x2F;动态 链接 相同符号的区别</h3><ul>
-<li>结论: 同符号函数, 只有编译直接链接非inline的函数时, 会报错, 否则使用第一个找到的</li>
-<li>编译链接:<ul>
-<li>同符号的变量&#x2F;函数会报错, 他们都是强符号</li>
-<li>同符号的函数, 如果被申明为inline的, 不会报错, 使用找到的第一个</li>
-<li>但是同符号的类方法, 不会报错, 类方法原地实现默认就是inline的</li>
-</ul>
-</li>
-<li>静态链接:<ul>
-<li>类似inline链接, 使用找到的第一个<ul>
-<li>一些多版本依赖问题就是这个造成的</li>
-<li>libA 依赖libX的v1版本, libB 依赖libX的v2版本, 最终链接后, 会定到一个版本中去, 导致数据结构和函数对不上</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>动态链接<ul>
-<li>类似静态链接, 相同符号找到第一个就退出</li>
-<li>利用这种机制, 我们可以覆盖一些libc函数</li>
-</ul>
-</li>
-</ul>
-<h2 id="汇编分析"><a href="#汇编分析" class="headerlink" title="汇编分析"></a>汇编分析</h2><ul>
-<li>反汇编在最后面</li>
-<li>Class1::fun mangling 后的符号是: _ZN6Class23funEv</li>
-<li>可以看到_ZN6Class23funEv在main.cpp.o 和test.cpp.o中都有定义</li>
-<li>但是到了最终可执行文件中, 就只有一个了</li>
-<li><strong>注意:</strong> data&#x2F;rodata&#x2F;bss段声明的数据不会被裁减, 即使完全没用到, <ul>
-<li>可以看到test中声明的字符串, 在最终链接结果中还在</li>
-<li>可执行文件大小比较敏感时需要留意</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># objdump -s -j .rodata ../../bin/src_cpp_language_class_link &gt; rodata.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">../../bin/src_cpp_language_class_link:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line">Contents of section .rodata:</span><br><span class="line"> 2000 01000200 436c6173 7332006d 61696e3a  ....Class2.main:</span><br><span class="line"> 2010 3a436c61 73733100 6d61696e 20737461  :Class1.main sta</span><br><span class="line"> 2020 72742000 436c6173 73320074 6573743a  rt .Class2.test:</span><br><span class="line"> 2030 3a436c61 73733200 74657374 20737461  :Class2.test sta</span><br><span class="line"> 2040 72742000                             rt .            </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">main.cpp.o:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;main&gt;:</span><br><span class="line">   0:	f3 0f 1e fa          	endbr64 </span><br><span class="line">   4:	55                   	push   %rbp</span><br><span class="line">   5:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">   8:	48 83 ec 10          	sub    $0x10,%rsp</span><br><span class="line">   c:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax</span><br><span class="line">  13:	00 00 </span><br><span class="line">  15:	48 89 45 f8          	mov    %rax,-0x8(%rbp)</span><br><span class="line">  19:	31 c0                	xor    %eax,%eax</span><br><span class="line">  1b:	48 8d 45 f6          	lea    -0xa(%rbp),%rax</span><br><span class="line">  1f:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">  22:	e8 00 00 00 00       	call   27 &lt;main+0x27&gt;</span><br><span class="line">  27:	48 8d 45 f7          	lea    -0x9(%rbp),%rax</span><br><span class="line">  2b:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">  2e:	e8 00 00 00 00       	call   33 &lt;main+0x33&gt;</span><br><span class="line">  33:	e8 00 00 00 00       	call   38 &lt;main+0x38&gt;</span><br><span class="line">  38:	b8 00 00 00 00       	mov    $0x0,%eax</span><br><span class="line">  3d:	48 8b 55 f8          	mov    -0x8(%rbp),%rdx</span><br><span class="line">  41:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx</span><br><span class="line">  48:	00 00 </span><br><span class="line">  4a:	74 05                	je     51 &lt;main+0x51&gt;</span><br><span class="line">  4c:	e8 00 00 00 00       	call   51 &lt;main+0x51&gt;</span><br><span class="line">  51:	c9                   	leave  </span><br><span class="line">  52:	c3                   	ret    </span><br><span class="line"></span><br><span class="line">Disassembly of section .text._ZN6Class23funEv:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;_ZN6Class23funEv&gt;:</span><br><span class="line">   0:	f3 0f 1e fa          	endbr64 </span><br><span class="line">   4:	55                   	push   %rbp</span><br><span class="line">   5:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">   8:	48 83 ec 10          	sub    $0x10,%rsp</span><br><span class="line">   c:	48 89 7d f8          	mov    %rdi,-0x8(%rbp)</span><br><span class="line">  10:	48 8d 05 00 00 00 00 	lea    0x0(%rip),%rax        # 17 &lt;_ZN6Class23funEv+0x17&gt;</span><br><span class="line">  17:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">  1a:	e8 00 00 00 00       	call   1f &lt;_ZN6Class23funEv+0x1f&gt;</span><br><span class="line">  1f:	90                   	nop</span><br><span class="line">  20:	c9                   	leave  </span><br><span class="line">  21:	c3                   	ret    </span><br><span class="line"></span><br><span class="line">Disassembly of section .text._ZN6Class13funEv:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;_ZN6Class13funEv&gt;:</span><br><span class="line">   0:	f3 0f 1e fa          	endbr64 </span><br><span class="line">   4:	55                   	push   %rbp</span><br><span class="line">   5:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">   8:	48 83 ec 10          	sub    $0x10,%rsp</span><br><span class="line">   c:	48 89 7d f8          	mov    %rdi,-0x8(%rbp)</span><br><span class="line">  10:	48 8d 05 00 00 00 00 	lea    0x0(%rip),%rax        # 17 &lt;_ZN6Class13funEv+0x17&gt;</span><br><span class="line">  17:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">  1a:	e8 00 00 00 00       	call   1f &lt;_ZN6Class13funEv+0x1f&gt;</span><br><span class="line">  1f:	90                   	nop</span><br><span class="line">  20:	c9                   	leave  </span><br><span class="line">  21:	c3                   	ret    </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">test.cpp.o:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;_Z4testv&gt;:</span><br><span class="line">   0:	f3 0f 1e fa          	endbr64 </span><br><span class="line">   4:	55                   	push   %rbp</span><br><span class="line">   5:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">   8:	48 83 ec 10          	sub    $0x10,%rsp</span><br><span class="line">   c:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax</span><br><span class="line">  13:	00 00 </span><br><span class="line">  15:	48 89 45 f8          	mov    %rax,-0x8(%rbp)</span><br><span class="line">  19:	31 c0                	xor    %eax,%eax</span><br><span class="line">  1b:	48 8d 45 f7          	lea    -0x9(%rbp),%rax</span><br><span class="line">  1f:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">  22:	e8 00 00 00 00       	call   27 &lt;_Z4testv+0x27&gt;</span><br><span class="line">  27:	90                   	nop</span><br><span class="line">  28:	48 8b 45 f8          	mov    -0x8(%rbp),%rax</span><br><span class="line">  2c:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax</span><br><span class="line">  33:	00 00 </span><br><span class="line">  35:	74 05                	je     3c &lt;_Z4testv+0x3c&gt;</span><br><span class="line">  37:	e8 00 00 00 00       	call   3c &lt;_Z4testv+0x3c&gt;</span><br><span class="line">  3c:	c9                   	leave  </span><br><span class="line">  3d:	c3                   	ret    </span><br><span class="line"></span><br><span class="line">Disassembly of section .text._ZN6Class13funEv:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;_ZN6Class13funEv&gt;:</span><br><span class="line">   0:	f3 0f 1e fa          	endbr64 </span><br><span class="line">   4:	55                   	push   %rbp</span><br><span class="line">   5:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">   8:	48 83 ec 10          	sub    $0x10,%rsp</span><br><span class="line">   c:	48 89 7d f8          	mov    %rdi,-0x8(%rbp)</span><br><span class="line">  10:	48 8d 05 00 00 00 00 	lea    0x0(%rip),%rax        # 17 &lt;_ZN6Class13funEv+0x17&gt;</span><br><span class="line">  17:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">  1a:	e8 00 00 00 00       	call   1f &lt;_ZN6Class13funEv+0x1f&gt;</span><br><span class="line">  1f:	90                   	nop</span><br><span class="line">  20:	c9                   	leave  </span><br><span class="line">  21:	c3                   	ret    </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">../../bin/src_cpp_language_class_link:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section .init:</span><br><span class="line"></span><br><span class="line">0000000000001000 &lt;_init&gt;:</span><br><span class="line">    1000:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    1004:	48 83 ec 08          	sub    $0x8,%rsp</span><br><span class="line">    1008:	48 8b 05 d9 2f 00 00 	mov    0x2fd9(%rip),%rax        # 3fe8 &lt;__gmon_start__@Base&gt;</span><br><span class="line">    100f:	48 85 c0             	test   %rax,%rax</span><br><span class="line">    1012:	74 02                	je     1016 &lt;_init+0x16&gt;</span><br><span class="line">    1014:	ff d0                	call   *%rax</span><br><span class="line">    1016:	48 83 c4 08          	add    $0x8,%rsp</span><br><span class="line">    101a:	c3                   	ret    </span><br><span class="line"></span><br><span class="line">Disassembly of section .plt:</span><br><span class="line"></span><br><span class="line">0000000000001020 &lt;.plt&gt;:</span><br><span class="line">    1020:	ff 35 92 2f 00 00    	push   0x2f92(%rip)        # 3fb8 &lt;_GLOBAL_OFFSET_TABLE_+0x8&gt;</span><br><span class="line">    1026:	f2 ff 25 93 2f 00 00 	bnd jmp *0x2f93(%rip)        # 3fc0 &lt;_GLOBAL_OFFSET_TABLE_+0x10&gt;</span><br><span class="line">    102d:	0f 1f 00             	nopl   (%rax)</span><br><span class="line">    1030:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    1034:	68 00 00 00 00       	push   $0x0</span><br><span class="line">    1039:	f2 e9 e1 ff ff ff    	bnd jmp 1020 &lt;_init+0x20&gt;</span><br><span class="line">    103f:	90                   	nop</span><br><span class="line">    1040:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    1044:	68 01 00 00 00       	push   $0x1</span><br><span class="line">    1049:	f2 e9 d1 ff ff ff    	bnd jmp 1020 &lt;_init+0x20&gt;</span><br><span class="line">    104f:	90                   	nop</span><br><span class="line"></span><br><span class="line">Disassembly of section .plt.got:</span><br><span class="line"></span><br><span class="line">0000000000001050 &lt;__cxa_finalize@plt&gt;:</span><br><span class="line">    1050:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    1054:	f2 ff 25 9d 2f 00 00 	bnd jmp *0x2f9d(%rip)        # 3ff8 &lt;__cxa_finalize@GLIBC_2.2.5&gt;</span><br><span class="line">    105b:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)</span><br><span class="line"></span><br><span class="line">Disassembly of section .plt.sec:</span><br><span class="line"></span><br><span class="line">0000000000001060 &lt;puts@plt&gt;:</span><br><span class="line">    1060:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    1064:	f2 ff 25 5d 2f 00 00 	bnd jmp *0x2f5d(%rip)        # 3fc8 &lt;puts@GLIBC_2.2.5&gt;</span><br><span class="line">    106b:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)</span><br><span class="line"></span><br><span class="line">0000000000001070 &lt;__stack_chk_fail@plt&gt;:</span><br><span class="line">    1070:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    1074:	f2 ff 25 55 2f 00 00 	bnd jmp *0x2f55(%rip)        # 3fd0 &lt;__stack_chk_fail@GLIBC_2.4&gt;</span><br><span class="line">    107b:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)</span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">0000000000001080 &lt;_start&gt;:</span><br><span class="line">    1080:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    1084:	31 ed                	xor    %ebp,%ebp</span><br><span class="line">    1086:	49 89 d1             	mov    %rdx,%r9</span><br><span class="line">    1089:	5e                   	pop    %rsi</span><br><span class="line">    108a:	48 89 e2             	mov    %rsp,%rdx</span><br><span class="line">    108d:	48 83 e4 f0          	and    $0xfffffffffffffff0,%rsp</span><br><span class="line">    1091:	50                   	push   %rax</span><br><span class="line">    1092:	54                   	push   %rsp</span><br><span class="line">    1093:	45 31 c0             	xor    %r8d,%r8d</span><br><span class="line">    1096:	31 c9                	xor    %ecx,%ecx</span><br><span class="line">    1098:	48 8d 3d ca 00 00 00 	lea    0xca(%rip),%rdi        # 1169 &lt;main&gt;</span><br><span class="line">    109f:	ff 15 33 2f 00 00    	call   *0x2f33(%rip)        # 3fd8 &lt;__libc_start_main@GLIBC_2.34&gt;</span><br><span class="line">    10a5:	f4                   	hlt    </span><br><span class="line">    10a6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)</span><br><span class="line">    10ad:	00 00 00 </span><br><span class="line"></span><br><span class="line">00000000000010b0 &lt;deregister_tm_clones&gt;:</span><br><span class="line">    10b0:	48 8d 3d 59 2f 00 00 	lea    0x2f59(%rip),%rdi        # 4010 &lt;__TMC_END__&gt;</span><br><span class="line">    10b7:	48 8d 05 52 2f 00 00 	lea    0x2f52(%rip),%rax        # 4010 &lt;__TMC_END__&gt;</span><br><span class="line">    10be:	48 39 f8             	cmp    %rdi,%rax</span><br><span class="line">    10c1:	74 15                	je     10d8 &lt;deregister_tm_clones+0x28&gt;</span><br><span class="line">    10c3:	48 8b 05 16 2f 00 00 	mov    0x2f16(%rip),%rax        # 3fe0 &lt;_ITM_deregisterTMCloneTable@Base&gt;</span><br><span class="line">    10ca:	48 85 c0             	test   %rax,%rax</span><br><span class="line">    10cd:	74 09                	je     10d8 &lt;deregister_tm_clones+0x28&gt;</span><br><span class="line">    10cf:	ff e0                	jmp    *%rax</span><br><span class="line">    10d1:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)</span><br><span class="line">    10d8:	c3                   	ret    </span><br><span class="line">    10d9:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)</span><br><span class="line"></span><br><span class="line">00000000000010e0 &lt;register_tm_clones&gt;:</span><br><span class="line">    10e0:	48 8d 3d 29 2f 00 00 	lea    0x2f29(%rip),%rdi        # 4010 &lt;__TMC_END__&gt;</span><br><span class="line">    10e7:	48 8d 35 22 2f 00 00 	lea    0x2f22(%rip),%rsi        # 4010 &lt;__TMC_END__&gt;</span><br><span class="line">    10ee:	48 29 fe             	sub    %rdi,%rsi</span><br><span class="line">    10f1:	48 89 f0             	mov    %rsi,%rax</span><br><span class="line">    10f4:	48 c1 ee 3f          	shr    $0x3f,%rsi</span><br><span class="line">    10f8:	48 c1 f8 03          	sar    $0x3,%rax</span><br><span class="line">    10fc:	48 01 c6             	add    %rax,%rsi</span><br><span class="line">    10ff:	48 d1 fe             	sar    %rsi</span><br><span class="line">    1102:	74 14                	je     1118 &lt;register_tm_clones+0x38&gt;</span><br><span class="line">    1104:	48 8b 05 e5 2e 00 00 	mov    0x2ee5(%rip),%rax        # 3ff0 &lt;_ITM_registerTMCloneTable@Base&gt;</span><br><span class="line">    110b:	48 85 c0             	test   %rax,%rax</span><br><span class="line">    110e:	74 08                	je     1118 &lt;register_tm_clones+0x38&gt;</span><br><span class="line">    1110:	ff e0                	jmp    *%rax</span><br><span class="line">    1112:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)</span><br><span class="line">    1118:	c3                   	ret    </span><br><span class="line">    1119:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)</span><br><span class="line"></span><br><span class="line">0000000000001120 &lt;__do_global_dtors_aux&gt;:</span><br><span class="line">    1120:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    1124:	80 3d e5 2e 00 00 00 	cmpb   $0x0,0x2ee5(%rip)        # 4010 &lt;__TMC_END__&gt;</span><br><span class="line">    112b:	75 2b                	jne    1158 &lt;__do_global_dtors_aux+0x38&gt;</span><br><span class="line">    112d:	55                   	push   %rbp</span><br><span class="line">    112e:	48 83 3d c2 2e 00 00 	cmpq   $0x0,0x2ec2(%rip)        # 3ff8 &lt;__cxa_finalize@GLIBC_2.2.5&gt;</span><br><span class="line">    1135:	00 </span><br><span class="line">    1136:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">    1139:	74 0c                	je     1147 &lt;__do_global_dtors_aux+0x27&gt;</span><br><span class="line">    113b:	48 8b 3d c6 2e 00 00 	mov    0x2ec6(%rip),%rdi        # 4008 &lt;__dso_handle&gt;</span><br><span class="line">    1142:	e8 09 ff ff ff       	call   1050 &lt;__cxa_finalize@plt&gt;</span><br><span class="line">    1147:	e8 64 ff ff ff       	call   10b0 &lt;deregister_tm_clones&gt;</span><br><span class="line">    114c:	c6 05 bd 2e 00 00 01 	movb   $0x1,0x2ebd(%rip)        # 4010 &lt;__TMC_END__&gt;</span><br><span class="line">    1153:	5d                   	pop    %rbp</span><br><span class="line">    1154:	c3                   	ret    </span><br><span class="line">    1155:	0f 1f 00             	nopl   (%rax)</span><br><span class="line">    1158:	c3                   	ret    </span><br><span class="line">    1159:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)</span><br><span class="line"></span><br><span class="line">0000000000001160 &lt;frame_dummy&gt;:</span><br><span class="line">    1160:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    1164:	e9 77 ff ff ff       	jmp    10e0 &lt;register_tm_clones&gt;</span><br><span class="line"></span><br><span class="line">0000000000001169 &lt;main&gt;:</span><br><span class="line">    1169:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    116d:	55                   	push   %rbp</span><br><span class="line">    116e:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">    1171:	48 83 ec 10          	sub    $0x10,%rsp</span><br><span class="line">    1175:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax</span><br><span class="line">    117c:	00 00 </span><br><span class="line">    117e:	48 89 45 f8          	mov    %rax,-0x8(%rbp)</span><br><span class="line">    1182:	31 c0                	xor    %eax,%eax</span><br><span class="line">    1184:	48 8d 05 8d 0e 00 00 	lea    0xe8d(%rip),%rax        # 2018 &lt;_IO_stdin_used+0x18&gt;</span><br><span class="line">    118b:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    118e:	e8 cd fe ff ff       	call   1060 &lt;puts@plt&gt;</span><br><span class="line">    1193:	48 8d 45 f6          	lea    -0xa(%rbp),%rax</span><br><span class="line">    1197:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    119a:	e8 4f 00 00 00       	call   11ee &lt;_ZN6Class13funEv&gt;</span><br><span class="line">    119f:	48 8d 45 f7          	lea    -0x9(%rbp),%rax</span><br><span class="line">    11a3:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    11a6:	e8 21 00 00 00       	call   11cc &lt;_ZN6Class23funEv&gt;</span><br><span class="line">    11ab:	e8 60 00 00 00       	call   1210 &lt;_Z4testv&gt;</span><br><span class="line">    11b0:	b8 00 00 00 00       	mov    $0x0,%eax</span><br><span class="line">    11b5:	48 8b 55 f8          	mov    -0x8(%rbp),%rdx</span><br><span class="line">    11b9:	64 48 2b 14 25 28 00 	sub    %fs:0x28,%rdx</span><br><span class="line">    11c0:	00 00 </span><br><span class="line">    11c2:	74 05                	je     11c9 &lt;main+0x60&gt;</span><br><span class="line">    11c4:	e8 a7 fe ff ff       	call   1070 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">    11c9:	c9                   	leave  </span><br><span class="line">    11ca:	c3                   	ret    </span><br><span class="line">    11cb:	90                   	nop</span><br><span class="line"></span><br><span class="line">00000000000011cc &lt;_ZN6Class23funEv&gt;:</span><br><span class="line">    11cc:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    11d0:	55                   	push   %rbp</span><br><span class="line">    11d1:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">    11d4:	48 83 ec 10          	sub    $0x10,%rsp</span><br><span class="line">    11d8:	48 89 7d f8          	mov    %rdi,-0x8(%rbp)</span><br><span class="line">    11dc:	48 8d 05 21 0e 00 00 	lea    0xe21(%rip),%rax        # 2004 &lt;_IO_stdin_used+0x4&gt;</span><br><span class="line">    11e3:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    11e6:	e8 75 fe ff ff       	call   1060 &lt;puts@plt&gt;</span><br><span class="line">    11eb:	90                   	nop</span><br><span class="line">    11ec:	c9                   	leave  </span><br><span class="line">    11ed:	c3                   	ret    </span><br><span class="line"></span><br><span class="line">00000000000011ee &lt;_ZN6Class13funEv&gt;:</span><br><span class="line">    11ee:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    11f2:	55                   	push   %rbp</span><br><span class="line">    11f3:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">    11f6:	48 83 ec 10          	sub    $0x10,%rsp</span><br><span class="line">    11fa:	48 89 7d f8          	mov    %rdi,-0x8(%rbp)</span><br><span class="line">    11fe:	48 8d 05 06 0e 00 00 	lea    0xe06(%rip),%rax        # 200b &lt;_IO_stdin_used+0xb&gt;</span><br><span class="line">    1205:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    1208:	e8 53 fe ff ff       	call   1060 &lt;puts@plt&gt;</span><br><span class="line">    120d:	90                   	nop</span><br><span class="line">    120e:	c9                   	leave  </span><br><span class="line">    120f:	c3                   	ret    </span><br><span class="line"></span><br><span class="line">0000000000001210 &lt;_Z4testv&gt;:</span><br><span class="line">    1210:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    1214:	55                   	push   %rbp</span><br><span class="line">    1215:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">    1218:	48 83 ec 10          	sub    $0x10,%rsp</span><br><span class="line">    121c:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax</span><br><span class="line">    1223:	00 00 </span><br><span class="line">    1225:	48 89 45 f8          	mov    %rax,-0x8(%rbp)</span><br><span class="line">    1229:	31 c0                	xor    %eax,%eax</span><br><span class="line">    122b:	48 8d 05 06 0e 00 00 	lea    0xe06(%rip),%rax        # 2038 &lt;_IO_stdin_used+0x38&gt;</span><br><span class="line">    1232:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    1235:	e8 26 fe ff ff       	call   1060 &lt;puts@plt&gt;</span><br><span class="line">    123a:	48 8d 45 f6          	lea    -0xa(%rbp),%rax</span><br><span class="line">    123e:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    1241:	e8 a8 ff ff ff       	call   11ee &lt;_ZN6Class13funEv&gt;</span><br><span class="line">    1246:	48 8d 45 f7          	lea    -0x9(%rbp),%rax</span><br><span class="line">    124a:	48 89 c7             	mov    %rax,%rdi</span><br><span class="line">    124d:	e8 7a ff ff ff       	call   11cc &lt;_ZN6Class23funEv&gt;</span><br><span class="line">    1252:	90                   	nop</span><br><span class="line">    1253:	48 8b 45 f8          	mov    -0x8(%rbp),%rax</span><br><span class="line">    1257:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax</span><br><span class="line">    125e:	00 00 </span><br><span class="line">    1260:	74 05                	je     1267 &lt;_Z4testv+0x57&gt;</span><br><span class="line">    1262:	e8 09 fe ff ff       	call   1070 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">    1267:	c9                   	leave  </span><br><span class="line">    1268:	c3                   	ret    </span><br><span class="line"></span><br><span class="line">Disassembly of section .fini:</span><br><span class="line"></span><br><span class="line">000000000000126c &lt;_fini&gt;:</span><br><span class="line">    126c:	f3 0f 1e fa          	endbr64 </span><br><span class="line">    1270:	48 83 ec 08          	sub    $0x8,%rsp</span><br><span class="line">    1274:	48 83 c4 08          	add    $0x8,%rsp</span><br><span class="line">    1278:	c3                   	ret    </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1195,7 +1189,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1206,7 +1200,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

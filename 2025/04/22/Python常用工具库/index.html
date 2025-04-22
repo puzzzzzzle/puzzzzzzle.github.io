@@ -20,25 +20,20 @@
     var CONFIG = {"hostname":"puzzzzzzle.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="cpp模仿CSharp事件机制(2) 任意数量参数支持 上一篇中实现的只能在注册事件时绑定自己的变量，无法在fireevents时传递参数，这次实现下  实现  原理很简单，就是打一个参数包，fire event和注册函数时，时同样使用这个参数包 但是不能用void来声明变量，所以void版的需要特化下 这同样造成了不能使用一个完全抽象的接口来定义，所以就完全拆开了  使用方式  和之前的基本一致">
+  <meta name="description" content="Python常用工具库 参考 https:&#x2F;&#x2F;github.com&#x2F;vinta&#x2F;awesome-python , 挑选了一些常用的  包管理&#x2F;环境 uv: rust写的, 非常好用, 基本都迁移到这个了 pyinstaller: 打包可执行文件 jupyter notebook: 非常好用的交互式python环境  工具 mypy: 类型检查 FastAPI&#x2F;Typer: 类似">
 <meta property="og:type" content="article">
-<meta property="og:title" content="cpp模仿CSharp事件机制(2)任意数量参数支持">
-<meta property="og:url" content="https://puzzzzzzle.github.io/2020/01/27/cpp%E6%A8%A1%E4%BB%BFCSharp%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6-2-%E4%BB%BB%E6%84%8F%E6%95%B0%E9%87%8F%E5%8F%82%E6%95%B0%E6%94%AF%E6%8C%81/index.html">
+<meta property="og:title" content="Python常用工具库">
+<meta property="og:url" content="https://puzzzzzzle.github.io/2025/04/22/Python%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BA%93/index.html">
 <meta property="og:site_name" content="puzzzzzzle&#39;s blog">
-<meta property="og:description" content="cpp模仿CSharp事件机制(2) 任意数量参数支持 上一篇中实现的只能在注册事件时绑定自己的变量，无法在fireevents时传递参数，这次实现下  实现  原理很简单，就是打一个参数包，fire event和注册函数时，时同样使用这个参数包 但是不能用void来声明变量，所以void版的需要特化下 这同样造成了不能使用一个完全抽象的接口来定义，所以就完全拆开了  使用方式  和之前的基本一致">
+<meta property="og:description" content="Python常用工具库 参考 https:&#x2F;&#x2F;github.com&#x2F;vinta&#x2F;awesome-python , 挑选了一些常用的  包管理&#x2F;环境 uv: rust写的, 非常好用, 基本都迁移到这个了 pyinstaller: 打包可执行文件 jupyter notebook: 非常好用的交互式python环境  工具 mypy: 类型检查 FastAPI&#x2F;Typer: 类似">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://puzzzzzzle.github.io/2020/01/27/cpp%E6%A8%A1%E4%BB%BFCSharp%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6-2-%E4%BB%BB%E6%84%8F%E6%95%B0%E9%87%8F%E5%8F%82%E6%95%B0%E6%94%AF%E6%8C%81/WX20200127-175549@2x.png">
-<meta property="og:image" content="https://puzzzzzzle.github.io/2020/01/27/cpp%E6%A8%A1%E4%BB%BFCSharp%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6-2-%E4%BB%BB%E6%84%8F%E6%95%B0%E9%87%8F%E5%8F%82%E6%95%B0%E6%94%AF%E6%8C%81/WX20200127-180140@2x.png">
-<meta property="og:image" content="https://puzzzzzzle.github.io/2020/01/27/cpp%E6%A8%A1%E4%BB%BFCSharp%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6-2-%E4%BB%BB%E6%84%8F%E6%95%B0%E9%87%8F%E5%8F%82%E6%95%B0%E6%94%AF%E6%8C%81/fireEvent.png">
-<meta property="article:published_time" content="2020-01-27T09:53:25.000Z">
-<meta property="article:modified_time" content="2025-04-22T08:53:19.134Z">
+<meta property="article:published_time" content="2025-04-22T08:18:33.000Z">
+<meta property="article:modified_time" content="2025-04-22T08:53:19.137Z">
 <meta property="article:author" content="puzzzzzzle">
-<meta property="article:tag" content="c++">
-<meta property="article:tag" content="event">
+<meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://puzzzzzzle.github.io/2020/01/27/cpp%E6%A8%A1%E4%BB%BFCSharp%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6-2-%E4%BB%BB%E6%84%8F%E6%95%B0%E9%87%8F%E5%8F%82%E6%95%B0%E6%94%AF%E6%8C%81/WX20200127-175549@2x.png">
 
-<link rel="canonical" href="https://puzzzzzzle.github.io/2020/01/27/cpp%E6%A8%A1%E4%BB%BFCSharp%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6-2-%E4%BB%BB%E6%84%8F%E6%95%B0%E9%87%8F%E5%8F%82%E6%95%B0%E6%94%AF%E6%8C%81/">
+<link rel="canonical" href="https://puzzzzzzle.github.io/2025/04/22/Python%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BA%93/">
 
 
 <script id="page-configurations">
@@ -51,7 +46,7 @@
   };
 </script>
 
-  <title>cpp模仿CSharp事件机制(2)任意数量参数支持 | puzzzzzzle's blog</title>
+  <title>Python常用工具库 | puzzzzzzle's blog</title>
   
 
 
@@ -157,7 +152,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2020/01/27/cpp%E6%A8%A1%E4%BB%BFCSharp%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6-2-%E4%BB%BB%E6%84%8F%E6%95%B0%E9%87%8F%E5%8F%82%E6%95%B0%E6%94%AF%E6%8C%81/">
+    <link itemprop="mainEntityOfPage" href="https://puzzzzzzle.github.io/2025/04/22/Python%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BA%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -170,7 +165,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          cpp模仿CSharp事件机制(2)任意数量参数支持
+          Python常用工具库
         </h1>
 
         <div class="post-meta">
@@ -179,24 +174,9 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-01-27 17:53:25" itemprop="dateCreated datePublished" datetime="2020-01-27T17:53:25+08:00">2020-01-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-04-22 16:53:19" itemprop="dateModified" datetime="2025-04-22T16:53:19+08:00">2025-04-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
-                </span>
+              <time title="创建时间：2025-04-22 16:18:33 / 修改时间：16:53:19" itemprop="dateCreated datePublished" datetime="2025-04-22T16:18:33+08:00">2025-04-22</time>
             </span>
 
           
@@ -210,29 +190,69 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="cpp模仿CSharp事件机制-2-任意数量参数支持"><a href="#cpp模仿CSharp事件机制-2-任意数量参数支持" class="headerlink" title="cpp模仿CSharp事件机制(2) 任意数量参数支持"></a>cpp模仿CSharp事件机制(2) 任意数量参数支持</h1><ul>
-<li>上一篇中实现的只能在注册事件时绑定自己的变量，无法在fireevents时传递参数，这次实现下</li>
+        <h2 id="Python常用工具库"><a href="#Python常用工具库" class="headerlink" title="Python常用工具库"></a>Python常用工具库</h2><ul>
+<li>参考 <a target="_blank" rel="noopener" href="https://github.com/vinta/awesome-python">https://github.com/vinta/awesome-python</a> , 挑选了一些常用的</li>
 </ul>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><ul>
-<li><img src="/2020/01/27/cpp%E6%A8%A1%E4%BB%BFCSharp%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6-2-%E4%BB%BB%E6%84%8F%E6%95%B0%E9%87%8F%E5%8F%82%E6%95%B0%E6%94%AF%E6%8C%81/WX20200127-175549@2x.png" class=""></li>
-<li>原理很简单，就是打一个参数包，fire event和注册函数时，时同样使用这个参数包</li>
-<li>但是不能用void来声明变量，所以void版的需要特化下</li>
-<li>这同样造成了不能使用一个完全抽象的接口来定义，所以就完全拆开了</li>
+<h3 id="包管理-环境"><a href="#包管理-环境" class="headerlink" title="包管理&#x2F;环境"></a>包管理&#x2F;环境</h3><ul>
+<li>uv: rust写的, 非常好用, 基本都迁移到这个了</li>
+<li>pyinstaller: 打包可执行文件</li>
+<li>jupyter notebook: 非常好用的交互式python环境</li>
 </ul>
-<h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><ul>
-<li><img src="/2020/01/27/cpp%E6%A8%A1%E4%BB%BFCSharp%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6-2-%E4%BB%BB%E6%84%8F%E6%95%B0%E9%87%8F%E5%8F%82%E6%95%B0%E6%94%AF%E6%8C%81/WX20200127-180140@2x.png" class=""></li>
-<li>和之前的基本一致，声明一个方法，然后注册进去就好</li>
-<li>不过这次得额外声明下需要的参数</li>
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><ul>
+<li>mypy: 类型检查</li>
+<li>FastAPI&#x2F;Typer: 类似Fastapi一样快速构建Cli命令</li>
+<li>rich: 支持表格&#x2F;进度条&#x2F;语法高亮等富文本输出</li>
+<li>tqdm: 非常方便的进度条, 也可以在命令行中使用</li>
+<li>pydantic: FastApi底层的类型解析, 非常方便 dict, json等格式化, 再也不用手撸__dict__</li>
+<li>difflib: 文本差异比较</li>
+<li>PyYAML: yaml解析器</li>
+<li>sh: 命令行调用</li>
 </ul>
-<h2 id="void特化"><a href="#void特化" class="headerlink" title="void特化"></a>void特化</h2><ul>
-<li>基类中不声明fireEvent方法</li>
-<li>特化的时候再声明</li>
-<li><img src="/2020/01/27/cpp%E6%A8%A1%E4%BB%BFCSharp%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6-2-%E4%BB%BB%E6%84%8F%E6%95%B0%E9%87%8F%E5%8F%82%E6%95%B0%E6%94%AF%E6%8C%81/fireEvent.png" class=""></li>
+<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><ul>
+<li>FastAPI: 替代 Flask, 原生支持异步</li>
+<li>aiohttp: 基于 asyncio 的异步 HTTP 网络库</li>
+<li>requests: 人性化的 HTTP 请求库</li>
+<li>grequests: requests 库 + gevent 用于异步 HTTP 请求</li>
+<li>httpie: curl 的替代</li>
+<li>Jinja2: 一个现代的, 对设计师友好的模板引擎</li>
+<li>celery: 一个异步任务队列&#x2F;作业队列, 基于分布式消息传递</li>
 </ul>
-<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><ul>
-<li>headOnly 可直接使用</li>
-<li><a target="_blank" rel="noopener" href="https://github.com/puzzzzzzle/cpp_study/blob/master/src/algorithm/design/csharp_event_with_args/MultiOrderedEvent.h">顺序可重复版</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/puzzzzzzle/cpp_study/blob/master/src/algorithm/design/csharp_event_with_args/UnOrderedEvent.h">无序不可重复版</a></li>
+<h3 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h3><ul>
+<li>pyqt</li>
+<li>tkinter</li>
+</ul>
+<h3 id="机器学习-数据处理"><a href="#机器学习-数据处理" class="headerlink" title="机器学习&#x2F;数据处理"></a>机器学习&#x2F;数据处理</h3><ul>
+<li>pillow: 图形处理, Pillow 是一个更加易用版的 PIL</li>
+</ul>
+<h4 id="数据可视化"><a href="#数据可视化" class="headerlink" title="数据可视化"></a>数据可视化</h4><ul>
+<li>matplotlib: 基础绘图库，支持各种静态&#x2F;交互式图表（折线图&#x2F;散点图&#x2F;柱状图等）</li>
+<li>seaborn: 基于matplotlib的高级统计可视化，内置美观主题和复杂图表类型</li>
+</ul>
+<h4 id="数据处理与计算"><a href="#数据处理与计算" class="headerlink" title="数据处理与计算"></a>数据处理与计算</h4><ul>
+<li>numpy:  数值计算基础库，提供高效多维数组(ndarray)和数学函数</li>
+<li>pandas:  数据结构化处理工具，DataFrame为核心，支持数据清洗&#x2F;分析&#x2F;IO操作</li>
+<li>scipy:  科学计算工具包，包含优化&#x2F;积分&#x2F;插值&#x2F;统计等高级数学模块</li>
+</ul>
+<h4 id="机器学习框架"><a href="#机器学习框架" class="headerlink" title="机器学习框架"></a>机器学习框架</h4><ul>
+<li>scikit-learn:  传统机器学习库，包含分类&#x2F;回归&#x2F;聚类等算法及评估工具</li>
+</ul>
+<h4 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h4><ul>
+<li>jupyter:  交互式笔记本环境，支持代码&#x2F;文档&#x2F;可视化混合编排</li>
+</ul>
+<h4 id="PyTorch生态"><a href="#PyTorch生态" class="headerlink" title="PyTorch生态"></a>PyTorch生态</h4><ul>
+<li>torch:  PyTorch深度学习框架，支持动态计算图和GPU加速</li>
+<li>torchvision:  计算机视觉工具库，包含数据集&#x2F;模型架构&#x2F;图像变换方法</li>
+<li>torchaudio:  音频处理工具库，支持语音数据集和特征提取</li>
+<li>pytorch-lightning:  PyTorch轻量级封装，简化训练流程和分布式训练</li>
+</ul>
+<h4 id="强化学习专用库"><a href="#强化学习专用库" class="headerlink" title="强化学习专用库"></a>强化学习专用库</h4><ul>
+<li>stable-baselines3:  最主流的RL实现库（PPO&#x2F;DQN&#x2F;SAC等算法）</li>
+</ul>
+<h4 id="其他重要库"><a href="#其他重要库" class="headerlink" title="其他重要库"></a>其他重要库</h4><ul>
+<li>sb3-contrib:  Stable-Baselines3扩展包（额外算法实现）</li>
+<li>mujoco:  物理仿真引擎（复杂机器人控制环境）</li>
+<li>openai: 调用llm模型的通用接口</li>
+<li>gymnasium[all]: 一些游戏的env实现, 方便强化学习使用, 依赖swig&amp;c++编译环境, 手动安装 : pacman -Sy swig</li>
 </ul>
 
     </div>
@@ -243,8 +263,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/c/" rel="tag"># c++</a>
-              <a href="/tags/event/" rel="tag"># event</a>
+              <a href="/tags/Python/" rel="tag"># Python</a>
           </div>
 
         
@@ -253,13 +272,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/01/20/cpp%E6%A8%A1%E4%BB%BFCSharp%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B61%E6%97%A0%E5%8F%82%E6%95%B0%E7%89%88/" rel="prev" title="cpp模仿C#事件机制(1) 无参数版实现">
-      <i class="fa fa-chevron-left"></i> cpp模仿C#事件机制(1) 无参数版实现
+    <a href="/2025/02/20/k8s%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="prev" title="k8s学习笔记">
+      <i class="fa fa-chevron-left"></i> k8s学习笔记
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/01/30/scope-guard-cpp-b%E7%89%88%E7%9A%84defer/" rel="next" title="scope guard cpp b版的defer">
-      scope guard cpp b版的defer <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -318,7 +334,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cpp%E6%A8%A1%E4%BB%BFCSharp%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6-2-%E4%BB%BB%E6%84%8F%E6%95%B0%E9%87%8F%E5%8F%82%E6%95%B0%E6%94%AF%E6%8C%81"><span class="nav-number">1.</span> <span class="nav-text">cpp模仿CSharp事件机制(2) 任意数量参数支持</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">使用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#void%E7%89%B9%E5%8C%96"><span class="nav-number">1.3.</span> <span class="nav-text">void特化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81"><span class="nav-number">1.4.</span> <span class="nav-text">源码</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">Python常用工具库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%85%E7%AE%A1%E7%90%86-%E7%8E%AF%E5%A2%83"><span class="nav-number">1.1.</span> <span class="nav-text">包管理&#x2F;环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">1.2.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API"><span class="nav-number">1.3.</span> <span class="nav-text">API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GUI"><span class="nav-number">1.4.</span> <span class="nav-text">GUI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">1.5.</span> <span class="nav-text">机器学习&#x2F;数据处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">1.5.1.</span> <span class="nav-text">数据可视化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E4%B8%8E%E8%AE%A1%E7%AE%97"><span class="nav-number">1.5.2.</span> <span class="nav-text">数据处理与计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6"><span class="nav-number">1.5.3.</span> <span class="nav-text">机器学习框架</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="nav-number">1.5.4.</span> <span class="nav-text">开发环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PyTorch%E7%94%9F%E6%80%81"><span class="nav-number">1.5.5.</span> <span class="nav-text">PyTorch生态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B8%93%E7%94%A8%E5%BA%93"><span class="nav-number">1.5.6.</span> <span class="nav-text">强化学习专用库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%87%8D%E8%A6%81%E5%BA%93"><span class="nav-number">1.5.7.</span> <span class="nav-text">其他重要库</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
